@@ -33,7 +33,7 @@ public class QuickBooksPropertiesUtils {
 	public static String ACCESS_TOKEN_URL;
 	public static String AUTHORIZE_URL;
 	public static String DISCONNECT_URL;
-	
+
 	public static String OAUTH_CONSUMER_KEY;
 	public static String OAUTH_CONSUMER_SECRET;
 
@@ -41,7 +41,10 @@ public class QuickBooksPropertiesUtils {
 
 	public static String QBO_URL;
 
-	/* the QB auth pop-up redirects to this page - used for refershing the parent page */
+	/*
+	 * the QB auth pop-up redirects to this page - used for refershing the
+	 * parent page
+	 */
 	public static String QB_POPUP_CLOSE_PAGE;
 
 	static {
@@ -50,15 +53,13 @@ public class QuickBooksPropertiesUtils {
 			Properties propConfig = new Properties();
 			InputStream input = null;
 
-			input = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream(PROP_FILE);
+			input = Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_FILE);
 
 			// load properties file
 			propConfig.load(input);
 
 			OAUTH_CONSUMER_KEY = propConfig.getProperty("oauth_consumer_key");
-			OAUTH_CONSUMER_SECRET = propConfig
-					.getProperty("oauth_consumer_secret");
+			OAUTH_CONSUMER_SECRET = propConfig.getProperty("oauth_consumer_secret");
 
 			OAUTH_CALLBACK_URL = propConfig.getProperty("oauth_callback_url");
 
@@ -68,13 +69,11 @@ public class QuickBooksPropertiesUtils {
 			ACCESS_TOKEN_URL = propConfig.getProperty("access_token_url");
 			AUTHORIZE_URL = propConfig.getProperty("authorize_url");
 			DISCONNECT_URL = propConfig.getProperty("disconnect_url");
-			
-			
+
 			QB_POPUP_CLOSE_PAGE = propConfig.getProperty("qb_popup_close_page");
 
 		} catch (IOException e) {
-			LOG.error("Properties File can not be loaded!!! "
-					+ e.getLocalizedMessage());
+			LOG.error("Properties File can not be loaded!!! " + e.getLocalizedMessage());
 		}
 
 	}

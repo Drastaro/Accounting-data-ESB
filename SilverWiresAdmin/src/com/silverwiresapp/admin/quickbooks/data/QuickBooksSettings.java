@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import com.google.gson.Gson;
 
 @Entity
-@Table(name="quickbooks_settings")
+@Table(name = "quickbooks_settings")
 public class QuickBooksSettings {
 
 	@Id

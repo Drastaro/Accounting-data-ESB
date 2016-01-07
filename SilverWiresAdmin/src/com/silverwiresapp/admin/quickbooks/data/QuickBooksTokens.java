@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="quickbooks_tokens")
+@Table(name = "quickbooks_tokens")
 public class QuickBooksTokens {
 
 	@Id
