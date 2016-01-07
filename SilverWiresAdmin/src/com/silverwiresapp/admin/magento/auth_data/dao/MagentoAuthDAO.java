@@ -4,8 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.silverwiresapp.admin.dao.DBHelper;
+import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
+import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 
 public class MagentoAuthDAO {
 
@@ -53,7 +62,7 @@ public class MagentoAuthDAO {
 
 	}
 
-	public static MagentoAuthData getMagentoAuthDataBySwUserId(String swUserId) throws SQLException {
+	public static MagentoAuthData getMagentoAuthDataBySwUserIdJDBC(String swUserId) throws SQLException {
 		MagentoAuthData result = null;
 
 		Connection con = DBHelper.createConnection();
@@ -76,9 +85,40 @@ public class MagentoAuthDAO {
 		return result;
 	}
 
+	public static MagentoAuthData getMagentoAuthDataBySwUserId(String swUserId) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			Criteria cr = session.createCriteria(QuickBooksTokens.class);
+			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			List<MagentoAuthData> result = cr.list();
+			if (result.size() < 1) {
+				return null;
+			} else {
+				return result.get(0);
+			}
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			tx.commit();
+			session.close();
+		}
+		return null;
+
+	}
+
 	public static MagentoAuthData getMagentoAuthDataBySwUserIdWithoutPass(String swUserId) throws SQLException {
 		MagentoAuthData data = getMagentoAuthDataBySwUserId(swUserId);
 		if (data != null)
+
 			data.setMagentoPass("");
 
 		return data;

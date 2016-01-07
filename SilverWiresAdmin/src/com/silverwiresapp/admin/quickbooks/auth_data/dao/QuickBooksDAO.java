@@ -4,14 +4,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.silverwiresapp.admin.dao.DBHelper;
+import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 
 public class QuickBooksDAO {
 
-	public static void saveRequestTokens(String swUserId, String requestToken, String requestSecret)
+	public static void saveRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
 		if (getTokensBySwUserId(swUserId) == null) {
 			// brand new connection is set
@@ -35,6 +43,10 @@ public class QuickBooksDAO {
 		stmt.executeUpdate();
 
 		DBHelper.closeConnection(con);
+	}
+
+	public static void saveRequestTokens(String swUserId, String requestToken, String requestSecret) {
+
 	}
 
 	public static void updateRequestTokens(String swUserId, String requestToken, String requestSecret)
@@ -92,7 +104,7 @@ public class QuickBooksDAO {
 		DBHelper.closeConnection(con);
 	}
 
-	public static QuickBooksTokens getTokensBySwUserId(String swUserId) throws SQLException {
+	public static QuickBooksTokens getTokensBySwUserIdJDBC(String swUserId) throws SQLException {
 		QuickBooksTokens result = null;
 
 		Connection con = DBHelper.createConnection();
@@ -113,7 +125,36 @@ public class QuickBooksDAO {
 		return result;
 	}
 
-	public static QuickBooksSettings getSettingsByUserId(String swUserId) throws SQLException {
+	public static QuickBooksTokens getTokensBySwUserId(String swUserId) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			Criteria cr = session.createCriteria(QuickBooksTokens.class);
+			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			List<QuickBooksTokens> result = cr.list();
+			if (result.size() < 1) {
+				return null;
+			} else {
+				return result.get(0);
+			}
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			tx.commit();
+			session.close();
+		}
+		return null;
+	}
+
+	public static QuickBooksSettings getSettingsByUserIdJDBC(String swUserId) throws SQLException {
 		QuickBooksSettings result = null;
 
 		Connection con = DBHelper.createConnection();
@@ -134,6 +175,36 @@ public class QuickBooksDAO {
 			result = new QuickBooksSettings();
 		}
 		return result;
+	}
+
+	public static QuickBooksSettings getSettingsByUserId(String swUserId) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(QuickBooksSettings.class);
+			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			List<QuickBooksSettings> rs = cr.list();
+
+			if (rs.size() != 0) {
+
+				return rs.get(0);
+
+			} else {
+
+				return null;
+			}
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+
+		}
+		return null;
 	}
 
 	public static void insertSettings(String swUserId, QuickBooksSettings settings) throws SQLException {

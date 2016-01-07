@@ -40,7 +40,7 @@ public class UsersDAO {
 		// generate UUID
 		String uuid = UUID.randomUUID().toString();
 
-		// save in db
+		// save in db with hibernate
 		try {
 			tx = session.beginTransaction();
 			UserData user = new UserData(uuid, userID);

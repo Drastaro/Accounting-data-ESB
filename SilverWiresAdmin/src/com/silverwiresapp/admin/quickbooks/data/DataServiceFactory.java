@@ -10,7 +10,6 @@ import com.intuit.ipp.services.DataService;
 public class DataServiceFactory {
 
 	public DataService getDataService(QuickBooksTokens tokens) {
-		
 
 		IAuthorizer authorizer = new OAuthAuthorizer(QuickBooksPropertiesUtils.OAUTH_CONSUMER_KEY,
 				QuickBooksPropertiesUtils.OAUTH_CONSUMER_SECRET, tokens.getAccessToken(),
@@ -18,16 +17,13 @@ public class DataServiceFactory {
 
 		Context context;
 		try {
-			context = new Context(authorizer, ServiceType.QBO,
-					tokens.getQboCompanyId());
-		
+			context = new Context(authorizer, ServiceType.QBO, tokens.getQboCompanyId());
+
 		} catch (FMSException e) {
-			throw new RuntimeException(
-					"Could not initialize Intuit context object", e);
+			throw new RuntimeException("Could not initialize Intuit context object", e);
 		}
 
 		return new DataService(context);
 	}
 
-	
 }

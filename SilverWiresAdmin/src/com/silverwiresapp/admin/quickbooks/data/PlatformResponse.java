@@ -3,21 +3,20 @@ package com.silverwiresapp.admin.quickbooks.data;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="PlatformResponse")
+@XmlRootElement(name = "PlatformResponse")
 public class PlatformResponse {
 
-	
 	String errorMessage;
-	
+
 	String errorCode;
-	
+
 	String serverTime;
 
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 
-	@XmlElement(name="ErrorMessage")
+	@XmlElement(name = "ErrorMessage")
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
@@ -26,7 +25,7 @@ public class PlatformResponse {
 		return errorCode;
 	}
 
-	@XmlElement(name="ErrorCode")
+	@XmlElement(name = "ErrorCode")
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
@@ -34,7 +33,8 @@ public class PlatformResponse {
 	public String getServerTime() {
 		return serverTime;
 	}
-	@XmlElement(name="ServerTime")
+
+	@XmlElement(name = "ServerTime")
 	public void setServerTime(String serverTime) {
 		this.serverTime = serverTime;
 	}

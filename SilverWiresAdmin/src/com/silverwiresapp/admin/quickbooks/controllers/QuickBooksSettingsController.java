@@ -59,6 +59,11 @@ public class QuickBooksSettingsController {
 			Map<String, String> magentTaxesMap = getMagentoTaxesMap(magentoTaxes);
 			taxesMap.put("-1", "No tax mapping");
 			QuickBooksSettings qbSettings = QuickBooksDAO.getSettingsByUserId(sw_user_id);
+
+			if (qbSettings == null) {
+				qbSettings = new QuickBooksSettings();
+			}
+
 			qbSettings.setCompanyName(companyInfo.getCompanyName());
 			qbSettings.setIncomeAccounts(incomeAccountsMap);
 			qbSettings.setQbTaxes(taxesMap);
