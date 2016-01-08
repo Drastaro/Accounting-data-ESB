@@ -7,7 +7,6 @@
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/silverwires_admin</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">mircea</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.show_sql">true</property>
 
@@ -17,5 +16,6 @@
 		<mapping class="com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens" />
 		<mapping class="com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings" />
 		<mapping class="com.silverwiresapp.admin.users.pojo.UserData" />
+		<mapping class="com.silverwiresapp.admin.xeroauth.pojo.XeroTokens" />
 	</session-factory>
 </hibernate-configuration>
