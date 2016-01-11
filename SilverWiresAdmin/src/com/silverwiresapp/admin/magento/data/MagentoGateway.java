@@ -20,7 +20,7 @@ public class MagentoGateway {
 
 		
 		try {
-			String response=(String)magentoSoapClient.call("quickbookswire_api.swlisttaxes", "");
+			String response=(String)magentoSoapClient.call("silverwires_api.swlisttaxes", "");
 			Gson gson = new Gson();
 			System.out.println(response);
 			result=gson.fromJson(response, MagentoTaxRate[].class);
