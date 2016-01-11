@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import com.google.gson.Gson;
 
 @Entity
-@Table(name = "quickbooks_settings")
+@Table(name = "magento_quickbooks_settings")
 public class QuickBooksSettings {
 
 	@Id
@@ -42,6 +42,22 @@ public class QuickBooksSettings {
 
 	@Column(name = "taxes_mapping")
 	private String magQBTaxesMapping;
+
+	public QuickBooksSettings() {
+
+	}
+
+	public QuickBooksSettings(String swUserId) {
+
+		this.swUserId = swUserId;
+	}
+
+	public QuickBooksSettings(String swUserId, int selectedIncomeAccountId, String magQBTaxesMapping) {
+
+		this.swUserId = swUserId;
+		this.selectedIncomeAccountId = selectedIncomeAccountId;
+		this.magQBTaxesMapping = magQBTaxesMapping;
+	}
 
 	public int getId() {
 		return id;

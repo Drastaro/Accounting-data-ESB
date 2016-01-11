@@ -8,29 +8,27 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
+import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.intuit.ipp.data.CompanyInfo;
 import com.silverwiresapp.admin.quickbooks.auth_data.dao.QuickBooksDAO;
 import com.silverwiresapp.admin.quickbooks.data.PlatformResponse;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksDataGateway;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksPropertiesUtils;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
-
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
@@ -95,6 +93,7 @@ public class QuickBooksAuthController {
 			session.setAttribute("oauthConsumer", oauthconsumer);
 			session.setAttribute("sw_user_id", swUserId);
 			response.sendRedirect(authUrl);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -175,15 +174,16 @@ public class QuickBooksAuthController {
 	}
 
 	@RequestMapping(value = "/status", method = RequestMethod.POST)
-	public void getQuickBooksStatus(@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void getQuickBooksStatus(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		try {
 			// get from DB if the tokens are saved
-			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(sw_user_id);
+			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(swUserId);
 			String status = "";
 			String companyName = "";
-			if (tokens == null || tokens.getAccessTokenSecret().isEmpty() || tokens.getAccessToken().isEmpty()) {
+			if (tokens == null || StringUtils.isEmpty(tokens.getAccessTokenSecret())
+					|| StringUtils.isEmpty(tokens.getAccessToken())) {
 				status = "not-connected";
 			} else {
 				status = "connected";
@@ -203,13 +203,13 @@ public class QuickBooksAuthController {
 	}
 
 	@RequestMapping(value = "/disconnect", method = RequestMethod.POST)
-	public void disconnectQuickbooks(@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void disconnectQuickbooks(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			HttpServletResponse response) throws ServletException, IOException, SQLException {
 
 		try {
 
 			// get from DB if the tokens are saved
-			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(sw_user_id);
+			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(swUserId);
 			if (tokens == null) {
 				response.getWriter().write("{ \"result\": \"false\"}");
 				return;
@@ -237,58 +237,55 @@ public class QuickBooksAuthController {
 					responseReceived.append(line);
 
 				}
+
 				rd.close();
 				System.out.println("Disconnect response===" + responseReceived.toString());
 				// parse xml reponse to get response error code
 				JAXBContext jaxbContext = JAXBContext.newInstance(PlatformResponse.class);
-
 				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-				PlatformResponse platformResp = (PlatformResponse) JAXB
-						.unmarshal(new StringReader(responseReceived.toString()), PlatformResponse.class);
-				System.out.println("Platforms resp mesg:== " + platformResp.getErrorMessage() + "  code==="
-						+ platformResp.getErrorCode());
+				StreamSource streamSource = new StreamSource(new StringReader(responseReceived.toString()));
+				JAXBElement<PlatformResponse> je = jaxbUnmarshaller.unmarshal(streamSource, PlatformResponse.class);
+				PlatformResponse platResponse = je.getValue();
 
-				if (platformResp != null && "0".equals(platformResp.getErrorCode())) {
+				// PlatformResponse platformResp = (PlatformResponse)
+				// jaxbUnmarshaller
+				// .unmarshal(new StringReader(responseReceived.toString()));
+
+				System.out.println(je.getValue().getErrorCode());
+
+				System.out.println("Platforms resp mesg:== " + platResponse.getErrorMessage() + "  code==="
+						+ platResponse.getErrorCode());
+
+				if (platResponse != null && "0".equals(platResponse.getErrorCode())) {
 					// delete tokens from DB
-					QuickBooksDAO.deleteTokensBySwUserId(sw_user_id);
+					QuickBooksDAO.deleteTokensBySwUserId(swUserId);
 					// delete quickbooks settings
-					QuickBooksDAO.deleteSettingsBySwUserId(sw_user_id);
+					QuickBooksDAO.deleteSettingsBySwUserId(swUserId);
 
 					// reply with success true
 					response.getWriter().write("{ \"result\": \"true\"}");
 				} else {
-					if ("270".equals(platformResp.getErrorCode())) {
+					if ("270".equals(platResponse.getErrorCode())) {
 						// the tokens are already invalid -- delete
-						QuickBooksDAO.deleteTokensBySwUserId(sw_user_id);
+						QuickBooksDAO.deleteTokensBySwUserId(swUserId);
 						// delete quickbooks settings
-						QuickBooksDAO.deleteSettingsBySwUserId(sw_user_id);
+						QuickBooksDAO.deleteSettingsBySwUserId(swUserId);
 
 					}
 					response.getWriter().write("{ \"result\": \"false\"}");
-					// else reply with success false
 				}
-
 			}
-
 		} catch (MalformedURLException e) {
-
 			e.printStackTrace();
-
 		} catch (IOException e) {
-
 			e.printStackTrace();
-
 		} catch (OAuthMessageSignerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (OAuthExpectationFailedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (OAuthCommunicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

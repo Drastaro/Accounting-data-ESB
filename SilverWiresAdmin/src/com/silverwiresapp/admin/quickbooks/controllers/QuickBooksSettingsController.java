@@ -5,16 +5,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.google.gson.Gson;
 import com.intuit.ipp.data.Account;
 import com.intuit.ipp.data.CompanyInfo;
@@ -33,12 +30,12 @@ import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 public class QuickBooksSettingsController {
 
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public void getQuickbooksSettings(@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void getQuickbooksSettings(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		try {
 			// get from DB if the tokens are saved
-			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(sw_user_id);
+			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(swUserId);
 
 			// get from Quickbooks company name
 
@@ -51,14 +48,14 @@ public class QuickBooksSettingsController {
 			List<TaxRate> taxes = QuickBooksDataGateway.getTaxes(tokens);
 
 			// get from magento list of registered tax rates
-			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(sw_user_id);
+			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
 			MagentoTaxRate[] magentoTaxes = MagentoGateway.getMagentoTaxRates(magentoData);
 
 			Map<String, String> incomeAccountsMap = getIncomeAccountsMap(incomeAccounts);
 			Map<String, String> taxesMap = getTaxesMap(taxes);
 			Map<String, String> magentTaxesMap = getMagentoTaxesMap(magentoTaxes);
 			taxesMap.put("-1", "No tax mapping");
-			QuickBooksSettings qbSettings = QuickBooksDAO.getSettingsByUserId(sw_user_id);
+			QuickBooksSettings qbSettings = QuickBooksDAO.getSettingsByUserId(swUserId);
 
 			if (qbSettings == null) {
 				qbSettings = new QuickBooksSettings();
@@ -85,7 +82,7 @@ public class QuickBooksSettingsController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public void saveQuickbooksSettings(@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void saveQuickbooksSettings(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			@RequestParam(value = "incomeAccount", required = true) Integer incomeAccount, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -111,7 +108,7 @@ public class QuickBooksSettingsController {
 			QuickBooksSettings settings = new QuickBooksSettings();
 			settings.setSelectedIncomeAccountId(incomeAccount);
 			settings.setMagQBTaxesMapping(magQBTaxesIds);
-			QuickBooksDAO.insertSettings(sw_user_id, settings);
+			QuickBooksDAO.insertSettings(swUserId, settings);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new ServletException("Server internal error on saving Quickbooks data");

@@ -5,16 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.silverwiresapp.admin.dao.DBHelper;
 import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 
 public class MagentoAuthDAO {
 
@@ -30,7 +28,8 @@ public class MagentoAuthDAO {
 		}
 	}
 
-	public static void insertAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+	public static void insertAuthDataJDBC(String swUserId, String username, String pass, String url)
+			throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String insertString = "INSERT INTO magento_data (sw_user_id, username, pass, url) values(?,?,?,?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
@@ -46,7 +45,29 @@ public class MagentoAuthDAO {
 
 	}
 
-	public static void updateAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+	public static void insertAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			MagentoAuthData magentoData = new MagentoAuthData(swUserId, username, pass, url);
+			session.save(magentoData);
+			tx.commit();
+
+		} catch (HibernateException e) {
+
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
+
+	}
+
+	public static void updateAuthDataJDBC(String swUserId, String username, String pass, String url)
+			throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String insertString = "update magento_data SET  username=?, pass=?, url=? where sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(insertString);
@@ -59,6 +80,27 @@ public class MagentoAuthDAO {
 		stmt.executeUpdate();
 
 		DBHelper.closeConnection(con);
+
+	}
+
+	public static void updateAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			MagentoAuthData magentoData = new MagentoAuthData(swUserId, username, pass, url);
+			session.update(magentoData);
+			tx.commit();
+
+		} catch (HibernateException e) {
+
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
 
 	}
 
@@ -88,15 +130,14 @@ public class MagentoAuthDAO {
 	public static MagentoAuthData getMagentoAuthDataBySwUserId(String swUserId) throws SQLException {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
 		Transaction tx = null;
 
 		try {
 
 			tx = session.beginTransaction();
 
-			Criteria cr = session.createCriteria(QuickBooksTokens.class);
-			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			Criteria cr = session.createCriteria(MagentoAuthData.class);
+			cr.add(Restrictions.eq("swUserId", swUserId));
 			List<MagentoAuthData> result = cr.list();
 			if (result.size() < 1) {
 				return null;
@@ -122,6 +163,33 @@ public class MagentoAuthDAO {
 			data.setMagentoPass("");
 
 		return data;
+	}
+
+	public static MagentoAuthData getMagentoAuthDataBySwUserIdWithoutPassProjection(String swUserId)
+			throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			Criteria cr = session.createCriteria(MagentoAuthData.class);
+			cr.add(Restrictions.eq("swUserId", swUserId))
+					.setProjection(Projections.projectionList().add(Projections.property("id"))
+							.add(Projections.property("swUserId")).add(Projections.property("magentoUsername"))
+							.add(Projections.property("magentoURL")));
+			List<MagentoAuthData> result = cr.list();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			tx.commit();
+			session.close();
+		}
+		return null;
 	}
 
 }
