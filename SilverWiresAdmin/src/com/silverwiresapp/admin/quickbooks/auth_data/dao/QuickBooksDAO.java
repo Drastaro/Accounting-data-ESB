@@ -5,13 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
 import com.silverwiresapp.admin.dao.DBHelper;
 import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings;
@@ -19,18 +17,32 @@ import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 
 public class QuickBooksDAO {
 
-	public static void saveRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
+	public static void saveRequestTokens(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
-		if (getTokensBySwUserId(swUserId) == null) {
-			// brand new connection is set
-			insertRequestTokens(swUserId, requestToken, requestSecret);
-		} else {
-			// connection update
-			updateRequestTokens(swUserId, requestToken, requestSecret);
+
+		try {
+
+			if (getTokensBySwUserId(swUserId) == null) {
+				// brand new connection is set
+				insertRequestTokens(swUserId, requestToken, requestSecret);
+			} else {
+				// connection update
+				updateRequestTokens(swUserId, requestToken, requestSecret);
+			}
+		} catch (HibernateException e)
+
+		{
+			e.printStackTrace();
+
+		} finally
+
+		{
+
 		}
+
 	}
 
-	public static void insertRequestTokens(String swUserId, String requestToken, String requestSecret)
+	public static void insertRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String insertString = "INSERT INTO quickbooks_tokens(sw_user_id, requestToken, requestTokenSecret) values(?,?,?)";
@@ -45,11 +57,33 @@ public class QuickBooksDAO {
 		DBHelper.closeConnection(con);
 	}
 
-	public static void saveRequestTokens(String swUserId, String requestToken, String requestSecret) {
+	public static void insertRequestTokens(String swUserId, String requestToken, String requestSecret) {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			QuickBooksTokens qTokens = new QuickBooksTokens();
+			qTokens.setSwUserId(swUserId);
+			qTokens.setRequestToken(requestToken);
+			qTokens.setRequestTokenSecret(requestSecret);
+
+			session.save(qTokens);
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
 
 	}
 
-	public static void updateRequestTokens(String swUserId, String requestToken, String requestSecret)
+	public static void updateRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String updateString = "UPDATE quickbooks_tokens SET requestToken=?, requestTokenSecret=? WHERE sw_user_id=?";
@@ -64,7 +98,38 @@ public class QuickBooksDAO {
 		DBHelper.closeConnection(con);
 	}
 
-	public static void deleteTokensBySwUserId(String swUserId) throws SQLException {
+	public static void updateRequestTokens(String swUserId, String requestToken, String requestSecret) {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(QuickBooksTokens.class);
+			cr.add(Restrictions.eq("swUserId", swUserId));
+			List<QuickBooksTokens> result = cr.list();
+			for (QuickBooksTokens quickBooksTokens : result) {
+
+				quickBooksTokens.setRequestToken(requestToken);
+				quickBooksTokens.setRequestTokenSecret(requestSecret);
+
+				session.update(quickBooksTokens);
+
+			}
+
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+
+			session.close();
+		}
+
+	}
+
+	public static void deleteTokensBySwUserIdJDBC(String swUserId) throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String deleteString = "delete from quickbooks_tokens WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(deleteString);
@@ -76,7 +141,33 @@ public class QuickBooksDAO {
 		DBHelper.closeConnection(con);
 	}
 
-	public static void deleteSettingsBySwUserId(String swUserId) throws SQLException {
+	public static void deleteTokensBySwUserId(String swUserId) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+			// Criteria cr = session.createCriteria(QuickBooksTokens.class);
+			// session.delete(cr.add(Restrictions.eq("swUserId", swUserId)));
+
+			QuickBooksTokens quick = (QuickBooksTokens) session.createCriteria(QuickBooksTokens.class)
+					.add(Restrictions.eq("swUserId", swUserId)).uniqueResult();
+			session.delete(quick);
+
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
+
+	}
+
+	public static void deleteSettingsBySwUserIdJDBC(String swUserId) throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String deleteString = "delete from quickbooks_settings WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(deleteString);
@@ -88,7 +179,33 @@ public class QuickBooksDAO {
 		DBHelper.closeConnection(con);
 	}
 
-	public static void updateAccessTokens(String swUserId, String realmId, String accessToken, String accessSecret)
+	public static void deleteSettingsBySwUserId(String swUserId) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			// Criteria cr = session.createCriteria(QuickBooksSettings.class);
+			// session.delete(cr.add(Restrictions.eq("swUserId", swUserId)));
+			QuickBooksSettings quickSettings = (QuickBooksSettings) session.createCriteria(QuickBooksSettings.class)
+					.add(Restrictions.eq("swUserId", swUserId)).uniqueResult();
+			session.delete(quickSettings);
+
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
+
+	}
+
+	public static void updateAccessTokensJDBC(String swUserId, String realmId, String accessToken, String accessSecret)
 			throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String updateString = "UPDATE quickbooks_tokens SET realmId=?, accessToken=?, accessTokenSecret=? WHERE sw_user_id=?";
@@ -102,6 +219,38 @@ public class QuickBooksDAO {
 		stmt.executeUpdate();
 
 		DBHelper.closeConnection(con);
+	}
+
+	public static void updateAccessTokens(String swUserId, String realmId, String accessToken, String accessSecret) {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(QuickBooksTokens.class);
+			cr.add(Restrictions.eq("swUserId", swUserId));
+			List<QuickBooksTokens> token = cr.list();
+			for (QuickBooksTokens quickBooksTokens : token) {
+
+				quickBooksTokens.setQboCompanyId(realmId);
+				quickBooksTokens.setAccessToken(accessToken);
+				quickBooksTokens.setAccessTokenSecret(accessSecret);
+				quickBooksTokens.setSwUserId(swUserId);
+
+				session.update(quickBooksTokens);
+			}
+
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
+
 	}
 
 	public static QuickBooksTokens getTokensBySwUserIdJDBC(String swUserId) throws SQLException {
@@ -128,15 +277,11 @@ public class QuickBooksDAO {
 	public static QuickBooksTokens getTokensBySwUserId(String swUserId) throws SQLException {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		Transaction tx = null;
-
+		session.beginTransaction();
 		try {
 
-			tx = session.beginTransaction();
-
 			Criteria cr = session.createCriteria(QuickBooksTokens.class);
-			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			cr.add(Restrictions.eq("swUserId", swUserId));
 			List<QuickBooksTokens> result = cr.list();
 			if (result.size() < 1) {
 				return null;
@@ -148,7 +293,7 @@ public class QuickBooksDAO {
 			e.printStackTrace();
 
 		} finally {
-			tx.commit();
+
 			session.close();
 		}
 		return null;
@@ -186,7 +331,7 @@ public class QuickBooksDAO {
 
 			tx = session.beginTransaction();
 			Criteria cr = session.createCriteria(QuickBooksSettings.class);
-			cr.add(Restrictions.eq("sw_user_id", swUserId));
+			cr.add(Restrictions.eq("swUserId", swUserId));
 			List<QuickBooksSettings> rs = cr.list();
 
 			if (rs.size() != 0) {
@@ -202,12 +347,13 @@ public class QuickBooksDAO {
 			e.printStackTrace();
 
 		} finally {
+			tx.commit();
 
 		}
 		return null;
 	}
 
-	public static void insertSettings(String swUserId, QuickBooksSettings settings) throws SQLException {
+	public static void insertSettingsJDBC(String swUserId, QuickBooksSettings settings) throws SQLException {
 		Connection con = DBHelper.createConnection();
 		String deleteString = "DELETE from quickbooks_settings where sw_user_id=? ";
 		PreparedStatement stmtDel = con.prepareStatement(deleteString);
@@ -224,6 +370,48 @@ public class QuickBooksDAO {
 		stmt.executeUpdate();
 
 		DBHelper.closeConnection(con);
+	}
+
+	public static void insertSettings(String swUserId, QuickBooksSettings settings) throws SQLException {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+
+			// Criteria cr = session.createCriteria(QuickBooksSettings.class);
+			// session.delete(cr.add(Restrictions.eq("swUserId", swUserId)));
+			Criteria cr = session.createCriteria(QuickBooksSettings.class);
+			QuickBooksSettings quickSettings = (QuickBooksSettings) cr.add(Restrictions.eq("swUserId", swUserId))
+					.uniqueResult();
+			List<QuickBooksSettings> result = cr.list();
+			if (result.size() < 1) {
+				QuickBooksSettings qSettings = new QuickBooksSettings(swUserId, settings.getSelectedIncomeAccountId(),
+						settings.getMagQBTaxesMapping());
+
+				session.save(qSettings);
+			} else {
+				session.delete(quickSettings);
+				tx.commit();
+				tx = session.beginTransaction();
+				QuickBooksSettings qSettings = new QuickBooksSettings(swUserId, settings.getSelectedIncomeAccountId(),
+						settings.getMagQBTaxesMapping());
+
+				session.save(qSettings);
+
+			}
+
+			tx.commit();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		} finally {
+			session.close();
+		}
+
 	}
 
 }

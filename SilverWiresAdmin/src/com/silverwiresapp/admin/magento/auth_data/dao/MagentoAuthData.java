@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="magento_data")
+@Table(name = "magento_data")
 public class MagentoAuthData {
 
 	@Id
@@ -30,6 +30,13 @@ public class MagentoAuthData {
 
 	public MagentoAuthData() {
 
+	}
+
+	public MagentoAuthData(String swUserId, String magentoUsername, String magentoPass, String magentoURL) {
+		this.swUserId = swUserId;
+		this.magentoUsername = magentoUsername;
+		this.magentoPass = magentoPass;
+		this.magentoURL = magentoURL;
 	}
 
 	public MagentoAuthData(int id, String swUserId, String magentoUsername, String magentoPass, String magentoURL) {

@@ -18,20 +18,18 @@ import com.google.gson.Gson;
 public class MagentoAuthController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public void saveMagentoAuthData(
-			@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void saveMagentoAuthData(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			@RequestParam(value = "mag_username", required = true) String magUsername,
 			@RequestParam(value = "mag_pass", required = true) String magPass,
-			@RequestParam(value = "mag_url", required = true) String magURL,
-			HttpServletResponse response) throws ServletException, IOException {
+			@RequestParam(value = "mag_url", required = true) String magURL, HttpServletResponse response)
+					throws ServletException, IOException {
 
 		System.out.println("Save magento data in db");
 		// save in db
 		try {
-			MagentoAuthDAO.saveData(sw_user_id, magUsername, magPass, magURL);
+			MagentoAuthDAO.saveData(swUserId, magUsername, magPass, magURL);
 		} catch (SQLException ex) {
-			throw new ServletException(
-					"Server internal error on saving Magento data");
+			throw new ServletException("Server internal error on saving Magento data");
 		}
 
 		// return the newly created uuid
@@ -39,22 +37,19 @@ public class MagentoAuthController {
 	}
 
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public void getMagentoAuthData(
-			@RequestParam(value = "sw_user_id", required = true) String sw_user_id,
+	public void getMagentoAuthData(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// save in db
 		try {
-			MagentoAuthData magentoData = MagentoAuthDAO
-					.getMagentoAuthDataBySwUserIdWithoutPass(sw_user_id);
+			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserIdWithoutPass(swUserId);
 			// return the newly created uuid
 			String resp = new Gson().toJson(magentoData);
 			System.out.println("MagentoData response as JSON===" + resp);
 			response.getWriter().write(resp);
 
 		} catch (SQLException ex) {
-			throw new ServletException(
-					"Server internal error on retrieveing Magento data");
+			throw new ServletException("Server internal error on retrieveing Magento data");
 		}
 
 	}
