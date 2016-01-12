@@ -10,12 +10,11 @@ public class DBHelper {
 	public static Connection createConnection() {
 		Properties prop = new Properties();
 		prop.put("user", "root");
-		prop.put("password", "mircea");
+		prop.put("password", "");
 
 		try {
-			 Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/silverwires_admin", prop);
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/silverwires_admin", prop);
 			System.out.println("Connection to DB created");
 			return conn;
 		} catch (SQLException e) {
@@ -26,7 +25,7 @@ public class DBHelper {
 		}
 		return null;
 	}
-	
+
 	public static void closeConnection(Connection con) {
 		try {
 			con.close();

@@ -169,7 +169,7 @@ public class QuickBooksDAO {
 
 	public static void deleteSettingsBySwUserIdJDBC(String swUserId) throws SQLException {
 		Connection con = DBHelper.createConnection();
-		String deleteString = "delete from quickbooks_settings WHERE sw_user_id=?";
+		String deleteString = "delete from magento_quickbooks_settings WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(deleteString);
 
 		stmt.setString(1, swUserId);
@@ -303,7 +303,7 @@ public class QuickBooksDAO {
 		QuickBooksSettings result = null;
 
 		Connection con = DBHelper.createConnection();
-		String query = "SELECT * FROM quickbooks_settings WHERE sw_user_id=?";
+		String query = "SELECT * FROM magento_quickbooks_settings WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(query);
 
 		stmt.setString(1, swUserId);
@@ -355,12 +355,12 @@ public class QuickBooksDAO {
 
 	public static void insertSettingsJDBC(String swUserId, QuickBooksSettings settings) throws SQLException {
 		Connection con = DBHelper.createConnection();
-		String deleteString = "DELETE from quickbooks_settings where sw_user_id=? ";
+		String deleteString = "DELETE from magento_quickbooks_settings where sw_user_id=? ";
 		PreparedStatement stmtDel = con.prepareStatement(deleteString);
 		stmtDel.setString(1, swUserId);
 		stmtDel.executeUpdate();
 
-		String insertString = "INSERT INTO quickbooks_settings(sw_user_id, income_account_id, taxes_mapping) values(?,?, ?)";
+		String insertString = "INSERT INTO magento_quickbooks_settings(sw_user_id, income_account_id, taxes_mapping) values(?,?, ?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
 		stmt.setString(1, swUserId);

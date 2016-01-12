@@ -49,7 +49,9 @@ public class QuickBooksSettingsController {
 
 			// get from magento list of registered tax rates
 			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
-			MagentoTaxRate[] magentoTaxes = MagentoGateway.getMagentoTaxRates(magentoData);
+			// MagentoTaxRate[] magentoTaxes =
+			// MagentoGateway.getMagentoTaxRates(magentoData);
+			MagentoTaxRate[] magentoTaxes = new MagentoTaxRate[0];
 
 			Map<String, String> incomeAccountsMap = getIncomeAccountsMap(incomeAccounts);
 			Map<String, String> taxesMap = getTaxesMap(taxes);
