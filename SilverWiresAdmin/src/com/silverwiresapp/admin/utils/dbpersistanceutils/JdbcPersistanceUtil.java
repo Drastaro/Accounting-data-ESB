@@ -1,11 +1,11 @@
-package com.silverwiresapp.admin.dao;
+package com.silverwiresapp.admin.utils.dbpersistanceutils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBHelper {
+public class JdbcPersistanceUtil {
 
 	public static Connection createConnection() {
 		Properties prop = new Properties();

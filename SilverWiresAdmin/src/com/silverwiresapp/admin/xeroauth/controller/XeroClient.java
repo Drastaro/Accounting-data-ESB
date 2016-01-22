@@ -1,11 +1,11 @@
 
 package com.silverwiresapp.admin.xeroauth.controller;
 
+import com.silverwiresapp.admin.xeroauth.api.XeroClientUnexpectedException;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfContact;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfInvoice;
 import com.silverwiresapp.admin.xeroauth.api.xsd.Report;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ResponseType;
-import com.silverwiresapp.admin.xeroauth.utils.XeroClientUnexpectedException;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;

@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.xeroauth.hibernateutil;
+package com.silverwiresapp.admin.utils.dbpersistanceutils;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-public class HibernateUtil {
+public class HibernatePersistanceUtil {
 
 	private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
@@ -33,7 +33,7 @@ public class HibernateUtil {
 
 	public static Transaction getTransaction() {
 		if (session == null || session.isOpen() == false) {
-			session = HibernateUtil.getSessionFactory().openSession();
+			session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		}
 		return session.getTransaction();
 	}

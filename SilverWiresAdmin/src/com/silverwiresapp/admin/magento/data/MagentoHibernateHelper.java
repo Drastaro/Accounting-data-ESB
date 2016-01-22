@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.xeroauth.data;
+package com.silverwiresapp.admin.magento.data;
 
 import java.util.List;
 
@@ -6,13 +6,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
+import com.silverwiresapp.admin.magento.pojo.MagentoTokens;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
-import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
-public class XeroHibernateHelper {
+public class MagentoHibernateHelper {
 
-	public static XeroTokens getTokensBySwUserId(String swUserId) {
+	public static MagentoTokens getTokensBySwUserId(String swUserId) {
 		// get hibernate session
 
 		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
@@ -21,17 +20,18 @@ public class XeroHibernateHelper {
 
 		// get xero token using criteria
 
-		Criteria criteria = session.createCriteria(XeroTokens.class);
+		Criteria criteria = session.createCriteria(MagentoTokens.class);
 		criteria.add(Restrictions.eq("swUserId", swUserId));
 		List results = criteria.list();
 		if (results.size() == 1) {
-			XeroTokens xeroTokens = (XeroTokens) results.get(0);
+			MagentoTokens mgTokens = (MagentoTokens) results.get(0);
 
 			// return tokens
-			return xeroTokens;
+			return mgTokens;
 		} else {
 			return null;
 		}
 
 	}
+
 }

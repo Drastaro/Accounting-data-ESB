@@ -12,14 +12,14 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.silverwiresapp.admin.dao.DBHelper;
-import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
 import com.silverwiresapp.admin.users.pojo.UserData;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.JdbcPersistanceUtil;
 
 public class UsersDAO {
 
 	public static void createUserJDBC(String appUserId, String swUserID) throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String insertString = "INSERT INTO sw_user(app_user_id, sw_user_id) values(?,?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
@@ -28,13 +28,13 @@ public class UsersDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 
 	}
 
 	public static String createUser(String userID) throws ServletException, IOException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		// generate UUID

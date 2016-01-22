@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.magento.auth_data.dao;
+package com.silverwiresapp.admin.magento.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +19,6 @@ public class MagentoAuthData {
 	@Column(name = "sw_user_id", unique = true)
 	private String swUserId;
 
-	@Column(name = "username")
-	private String magentoUsername;
-
-	@Column(name = "pass")
-	private String magentoPass;
-
 	@Column(name = "url")
 	private String magentoURL;
 
@@ -32,19 +26,16 @@ public class MagentoAuthData {
 
 	}
 
-	public MagentoAuthData(String swUserId, String magentoUsername, String magentoPass, String magentoURL) {
+	public MagentoAuthData(String swUserId, String magentoURL) {
+
 		this.swUserId = swUserId;
-		this.magentoUsername = magentoUsername;
-		this.magentoPass = magentoPass;
 		this.magentoURL = magentoURL;
 	}
 
-	public MagentoAuthData(int id, String swUserId, String magentoUsername, String magentoPass, String magentoURL) {
-		super();
+	public MagentoAuthData(int id, String swUserId, String magentoURL) {
+
 		this.id = id;
 		this.swUserId = swUserId;
-		this.magentoUsername = magentoUsername;
-		this.magentoPass = magentoPass;
 		this.magentoURL = magentoURL;
 	}
 
@@ -62,22 +53,6 @@ public class MagentoAuthData {
 
 	public void setSwUserId(String swUserId) {
 		this.swUserId = swUserId;
-	}
-
-	public String getMagentoUsername() {
-		return magentoUsername;
-	}
-
-	public void setMagentoUsername(String magentoUsername) {
-		this.magentoUsername = magentoUsername;
-	}
-
-	public String getMagentoPass() {
-		return magentoPass;
-	}
-
-	public void setMagentoPass(String magentoPass) {
-		this.magentoPass = magentoPass;
 	}
 
 	public String getMagentoURL() {

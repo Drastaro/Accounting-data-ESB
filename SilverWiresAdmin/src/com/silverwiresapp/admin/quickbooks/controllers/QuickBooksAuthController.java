@@ -85,11 +85,7 @@ public class QuickBooksAuthController {
 			// Store the request token and secret in the session object. These
 			// tokens need not be persisted in DB
 			HttpSession session = request.getSession();
-			/*
-			 * session.setAttribute("requestToken", oauthconsumer.getToken());
-			 * session.setAttribute("requestTokenSecret",
-			 * oauthconsumer.getTokenSecret());
-			 */
+
 			session.setAttribute("oauthConsumer", oauthconsumer);
 			session.setAttribute("sw_user_id", swUserId);
 			response.sendRedirect(authUrl);
@@ -156,14 +152,7 @@ public class QuickBooksAuthController {
 					QuickBooksDAO.updateAccessTokens(swUserId, realmID, accessToken, accessTokenSecret);
 
 				}
-				// String respMsg
-				// ="<script
-				// type=\"text/javascript\">window.opener.location.href =
-				// window.opener.location.href;window.close();</script>";
-				// String respMsg
-				// ="<BODY
-				// OnLoad=\"javascript:window.opener.location.reload(true);parent.window.close()\">";
-				// response.getWriter().write(respMsg);
+
 				response.sendRedirect(QuickBooksPropertiesUtils.QB_POPUP_CLOSE_PAGE);
 			}
 		} catch (Exception e) {
@@ -246,10 +235,6 @@ public class QuickBooksAuthController {
 				StreamSource streamSource = new StreamSource(new StringReader(responseReceived.toString()));
 				JAXBElement<PlatformResponse> je = jaxbUnmarshaller.unmarshal(streamSource, PlatformResponse.class);
 				PlatformResponse platResponse = je.getValue();
-
-				// PlatformResponse platformResp = (PlatformResponse)
-				// jaxbUnmarshaller
-				// .unmarshal(new StringReader(responseReceived.toString()));
 
 				System.out.println(je.getValue().getErrorCode());
 

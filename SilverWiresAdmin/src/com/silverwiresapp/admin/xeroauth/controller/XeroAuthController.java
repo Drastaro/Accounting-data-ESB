@@ -19,7 +19,8 @@ import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthGetAccessToken;
 import com.google.api.client.auth.oauth.OAuthHmacSigner;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.propertiesutils.XeroPropertiesUtils;
 import com.silverwiresapp.admin.xeroauth.data.XeroHibernateHelper;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
@@ -47,7 +48,7 @@ public class XeroAuthController {
 		getTemporaryToken.transport = new NetHttpTransport();
 
 		try {
-			Transaction tx = HibernateUtil.getTransaction();
+			Transaction tx = HibernatePersistanceUtil.getTransaction();
 			tx.begin();
 
 			OAuthCredentialsResponse temporaryTokenResponse = getTemporaryToken.execute();
@@ -87,10 +88,10 @@ public class XeroAuthController {
 
 			if (tokens.getId() == 0) {
 				// create
-				HibernateUtil.getSession().save(tokens);
+				HibernatePersistanceUtil.getSession().save(tokens);
 			} else {
 				// update
-				HibernateUtil.getSession().update(tokens);
+				HibernatePersistanceUtil.getSession().update(tokens);
 			}
 
 			HttpSession httpSession = request.getSession();
@@ -144,12 +145,12 @@ public class XeroAuthController {
 			// with
 			// the user profile in a more secure way.
 
-			Transaction tx = HibernateUtil.getTransaction();
+			Transaction tx = HibernatePersistanceUtil.getTransaction();
 			tx.begin();
 
 			xero.setAccessToken(accessTokenResponse.token);
 			xero.setAccessTokenSecret(accessTokenResponse.tokenSecret);
-			HibernateUtil.getSession().update(xero);
+			HibernatePersistanceUtil.getSession().update(xero);
 			tx.commit();
 
 			// Store 30 min Access Token Secret (from accessToken request) in
@@ -169,7 +170,7 @@ public class XeroAuthController {
 			e.printStackTrace();
 			LOG.error(e.getLocalizedMessage());
 		} finally {
-			HibernateUtil.closeSession();
+			HibernatePersistanceUtil.closeSession();
 			req.getSession().removeAttribute("xeroData");
 		}
 

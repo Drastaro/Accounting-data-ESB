@@ -11,26 +11,28 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import com.silverwiresapp.admin.dao.DBHelper;
-import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
+
+import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.JdbcPersistanceUtil;
 
 public class MagentoAuthDAO {
 
-	public static void saveData(String swUserId, String username, String pass, String url) throws SQLException {
+	public static void saveData(String swUserId, String url) throws SQLException {
 
 		// test if data is already in
 		if (getMagentoAuthDataBySwUserId(swUserId) == null) {
 			// no data record for this user
-			insertAuthData(swUserId, username, pass, url);
+			insertAuthData(swUserId, url);
 		} else {
 			// data saved before - do update
-			updateAuthData(swUserId, username, pass, url);
+			updateAuthData(swUserId, url);
 		}
 	}
 
 	public static void insertAuthDataJDBC(String swUserId, String username, String pass, String url)
 			throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String insertString = "INSERT INTO magento_data (sw_user_id, username, pass, url) values(?,?,?,?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
@@ -41,18 +43,18 @@ public class MagentoAuthDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 
 	}
 
-	public static void insertAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+	public static void insertAuthData(String swUserId, String url) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 
-			MagentoAuthData magentoData = new MagentoAuthData(swUserId, username, pass, url);
+			MagentoAuthData magentoData = new MagentoAuthData(swUserId, url);
 			session.save(magentoData);
 			tx.commit();
 
@@ -68,7 +70,7 @@ public class MagentoAuthDAO {
 
 	public static void updateAuthDataJDBC(String swUserId, String username, String pass, String url)
 			throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String insertString = "update magento_data SET  username=?, pass=?, url=? where sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
@@ -79,18 +81,18 @@ public class MagentoAuthDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 
 	}
 
-	public static void updateAuthData(String swUserId, String username, String pass, String url) throws SQLException {
+	public static void updateAuthData(String swUserId, String url) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 
-			MagentoAuthData magentoData = new MagentoAuthData(swUserId, username, pass, url);
+			MagentoAuthData magentoData = new MagentoAuthData(swUserId, url);
 			session.update(magentoData);
 			tx.commit();
 
@@ -107,7 +109,7 @@ public class MagentoAuthDAO {
 	public static MagentoAuthData getMagentoAuthDataBySwUserIdJDBC(String swUserId) throws SQLException {
 		MagentoAuthData result = null;
 
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String query = "SELECT * FROM magento_data WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(query);
 
@@ -117,19 +119,17 @@ public class MagentoAuthDAO {
 		if (rs.next()) {
 			int id = rs.getInt("id");
 			String swUserIdentifier = rs.getString("sw_user_id");
-			String magentoUsername = rs.getString("username");
-			String magentoPass = rs.getString("pass");
 			String magentoURL = rs.getString("url");
-			result = new MagentoAuthData(id, swUserIdentifier, magentoUsername, magentoPass, magentoURL);
+			result = new MagentoAuthData(id, swUserIdentifier, magentoURL);
 
 		}
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 		return result;
 	}
 
 	public static MagentoAuthData getMagentoAuthDataBySwUserId(String swUserId) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -154,42 +154,6 @@ public class MagentoAuthDAO {
 		}
 		return null;
 
-	}
-
-	public static MagentoAuthData getMagentoAuthDataBySwUserIdWithoutPass(String swUserId) throws SQLException {
-		MagentoAuthData data = getMagentoAuthDataBySwUserId(swUserId);
-		if (data != null)
-
-			data.setMagentoPass("");
-
-		return data;
-	}
-
-	public static MagentoAuthData getMagentoAuthDataBySwUserIdWithoutPassProjection(String swUserId)
-			throws SQLException {
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
-
-		try {
-
-			tx = session.beginTransaction();
-
-			Criteria cr = session.createCriteria(MagentoAuthData.class);
-			cr.add(Restrictions.eq("swUserId", swUserId))
-					.setProjection(Projections.projectionList().add(Projections.property("id"))
-							.add(Projections.property("swUserId")).add(Projections.property("magentoUsername"))
-							.add(Projections.property("magentoURL")));
-			List<MagentoAuthData> result = cr.list();
-
-		} catch (HibernateException e) {
-			e.printStackTrace();
-
-		} finally {
-			tx.commit();
-			session.close();
-		}
-		return null;
 	}
 
 }

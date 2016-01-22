@@ -2,8 +2,8 @@ package com.silverwiresapp.admin.xeroauth.data;
 
 import com.google.api.client.auth.oauth.OAuthHmacSigner;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.silverwiresapp.admin.utils.propertiesutils.XeroPropertiesUtils;
 import com.silverwiresapp.admin.xeroauth.controller.OAuthGetResource;
-import com.silverwiresapp.admin.xeroauth.controller.XeroPropertiesUtils;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
 public class XeroDataFactory {

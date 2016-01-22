@@ -5,7 +5,7 @@ import org.apache.axis2.AxisFault;
 import com.google.code.magja.soap.MagentoSoapClient;
 import com.google.code.magja.soap.SoapConfig;
 import com.google.gson.Gson;
-import com.silverwiresapp.admin.magento.auth_data.dao.MagentoAuthData;
+import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 
 public class MagentoGateway {
 

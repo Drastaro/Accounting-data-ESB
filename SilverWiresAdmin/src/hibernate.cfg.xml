@@ -11,11 +11,12 @@
 		<property name="hibernate.show_sql">true</property>
 
 		<property name="hbm2ddl.auto">update</property>
-		<mapping
-			class="com.silverwiresapp.admin.magento.auth_data.dao.MagentoAuthData" />
+
 		<mapping class="com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens" />
 		<mapping class="com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings" />
 		<mapping class="com.silverwiresapp.admin.users.pojo.UserData" />
 		<mapping class="com.silverwiresapp.admin.xeroauth.pojo.XeroTokens" />
+		<mapping class="com.silverwiresapp.admin.magento.pojo.MagentoTokens" />
+		<mapping class="com.silverwiresapp.admin.magento.pojo.MagentoAuthData" />
 	</session-factory>
 </hibernate-configuration>

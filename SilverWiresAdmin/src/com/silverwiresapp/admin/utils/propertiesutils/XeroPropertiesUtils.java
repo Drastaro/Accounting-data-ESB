@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.xeroauth.controller;
+package com.silverwiresapp.admin.utils.propertiesutils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,6 +27,7 @@ public class XeroPropertiesUtils {
 	public static String OAUTH_CONSUMER_SECRET;
 
 	public static String OAUTH_CALLBACK_URL;
+	public static String SCRIBE_OAUTH_CALLBACK_URL;
 
 	public static String XERO_URL;
 
@@ -51,6 +52,7 @@ public class XeroPropertiesUtils {
 			OAUTH_CONSUMER_SECRET = propConfig.getProperty("oauth_consumer_secret");
 
 			OAUTH_CALLBACK_URL = propConfig.getProperty("oauth_callback_url");
+			SCRIBE_OAUTH_CALLBACK_URL = propConfig.getProperty("scribe_oauth_callback_url");
 
 			XERO_URL = propConfig.getProperty("xero_url");
 

@@ -2,7 +2,6 @@ package com.silverwiresapp.admin.xeroauth.data;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpResponse;
@@ -36,10 +35,6 @@ public class XeroDataGateway {
 			return null;
 		}
 	}
-
-	/*
-	 * List of organisation
-	 */
 
 	public static List<Organisation> getOraganisations(String swUserId) throws IOException {
 

@@ -10,10 +10,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import com.silverwiresapp.admin.dao.DBHelper;
-import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
+
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.JdbcPersistanceUtil;
 
 public class QuickBooksDAO {
 
@@ -44,7 +45,7 @@ public class QuickBooksDAO {
 
 	public static void insertRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String insertString = "INSERT INTO quickbooks_tokens(sw_user_id, requestToken, requestTokenSecret) values(?,?,?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
@@ -54,12 +55,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void insertRequestTokens(String swUserId, String requestToken, String requestSecret) {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -85,7 +86,7 @@ public class QuickBooksDAO {
 
 	public static void updateRequestTokensJDBC(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String updateString = "UPDATE quickbooks_tokens SET requestToken=?, requestTokenSecret=? WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(updateString);
 
@@ -95,12 +96,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void updateRequestTokens(String swUserId, String requestToken, String requestSecret) {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -130,7 +131,7 @@ public class QuickBooksDAO {
 	}
 
 	public static void deleteTokensBySwUserIdJDBC(String swUserId) throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String deleteString = "delete from quickbooks_tokens WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(deleteString);
 
@@ -138,12 +139,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void deleteTokensBySwUserId(String swUserId) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -168,7 +169,7 @@ public class QuickBooksDAO {
 	}
 
 	public static void deleteSettingsBySwUserIdJDBC(String swUserId) throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String deleteString = "delete from magento_quickbooks_settings WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(deleteString);
 
@@ -176,12 +177,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void deleteSettingsBySwUserId(String swUserId) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -207,7 +208,7 @@ public class QuickBooksDAO {
 
 	public static void updateAccessTokensJDBC(String swUserId, String realmId, String accessToken, String accessSecret)
 			throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String updateString = "UPDATE quickbooks_tokens SET realmId=?, accessToken=?, accessTokenSecret=? WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(updateString);
 
@@ -218,12 +219,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void updateAccessTokens(String swUserId, String realmId, String accessToken, String accessSecret) {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -256,7 +257,7 @@ public class QuickBooksDAO {
 	public static QuickBooksTokens getTokensBySwUserIdJDBC(String swUserId) throws SQLException {
 		QuickBooksTokens result = null;
 
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String query = "SELECT * FROM quickbooks_tokens WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(query);
 
@@ -270,13 +271,13 @@ public class QuickBooksDAO {
 			result = new QuickBooksTokens(realmId, accessToken, accessTokenSecret);
 
 		}
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 		return result;
 	}
 
 	public static QuickBooksTokens getTokensBySwUserId(String swUserId) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		try {
 
@@ -302,7 +303,7 @@ public class QuickBooksDAO {
 	public static QuickBooksSettings getSettingsByUserIdJDBC(String swUserId) throws SQLException {
 		QuickBooksSettings result = null;
 
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String query = "SELECT * FROM magento_quickbooks_settings WHERE sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(query);
 
@@ -315,7 +316,7 @@ public class QuickBooksDAO {
 			result.setMagQBTaxesMapping(rs.getString("taxes_mapping"));
 
 		}
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 		if (result == null) {
 			result = new QuickBooksSettings();
 		}
@@ -324,7 +325,7 @@ public class QuickBooksDAO {
 
 	public static QuickBooksSettings getSettingsByUserId(String swUserId) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {
@@ -354,7 +355,7 @@ public class QuickBooksDAO {
 	}
 
 	public static void insertSettingsJDBC(String swUserId, QuickBooksSettings settings) throws SQLException {
-		Connection con = DBHelper.createConnection();
+		Connection con = JdbcPersistanceUtil.createConnection();
 		String deleteString = "DELETE from magento_quickbooks_settings where sw_user_id=? ";
 		PreparedStatement stmtDel = con.prepareStatement(deleteString);
 		stmtDel.setString(1, swUserId);
@@ -369,12 +370,12 @@ public class QuickBooksDAO {
 
 		stmt.executeUpdate();
 
-		DBHelper.closeConnection(con);
+		JdbcPersistanceUtil.closeConnection(con);
 	}
 
 	public static void insertSettings(String swUserId, QuickBooksSettings settings) throws SQLException {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 
 		try {

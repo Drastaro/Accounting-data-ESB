@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfContact;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfInvoice;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfLineItem;
@@ -26,13 +27,12 @@ import com.silverwiresapp.admin.xeroauth.api.xsd.LineItem;
 import com.silverwiresapp.admin.xeroauth.api.xsd.Organisation;
 import com.silverwiresapp.admin.xeroauth.api.xsd.TaxRate;
 import com.silverwiresapp.admin.xeroauth.data.XeroDataGateway;
-import com.silverwiresapp.admin.xeroauth.hibernateutil.HibernateUtil;
 
 @Controller
 @RequestMapping("/xero/data")
 public class XeroDataController {
 
-	Session session = HibernateUtil.getSessionFactory().openSession();
+	Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 	Transaction tx = null;
 
 	@RequestMapping(value = "/getorganisations", method = RequestMethod.GET)
@@ -176,7 +176,7 @@ public class XeroDataController {
 
 	}
 
-	@RequestMapping(value = "/updatecontact", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatecontact", method = RequestMethod.POST)
 	public void updateContact(@RequestParam("sw_user_id") String swUserId, @RequestParam("name") String name,
 			@RequestParam("firstName") String firstName, HttpServletRequest req, HttpServletResponse resp) {
 
@@ -199,6 +199,21 @@ public class XeroDataController {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+	}
+
+	@RequestMapping(value = "/getstatus", method = RequestMethod.GET)
+	public void getStatus(@RequestParam("sw_user_id") String swUserId, HttpServletRequest req,
+			HttpServletResponse resp) {
+
+		try {
+			if (XeroDataGateway.getContacts(swUserId) != null) {
+				System.out.println("Token is active");
+
+			}
+		} catch (IOException e) {
+			System.out.println("Token is expired");
 		}
 
 	}

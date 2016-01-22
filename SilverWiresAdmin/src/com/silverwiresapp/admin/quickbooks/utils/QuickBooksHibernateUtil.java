@@ -7,15 +7,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.silverwiresapp.admin.hibernatehelper.HibernateUtil;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 
 public class QuickBooksHibernateUtil {
 
 	public static QuickBooksTokens getTokensBySwUserId(String swUserId) {
 		// get hibernate session
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernatePersistanceUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		tx = session.beginTransaction();
 

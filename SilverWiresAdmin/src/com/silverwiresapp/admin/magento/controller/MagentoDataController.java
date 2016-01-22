@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.magento.auth_data.dao;
+package com.silverwiresapp.admin.magento.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
+import com.silverwiresapp.admin.magento.auth_data.dao.MagentoAuthDAO;
+import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 
 @Controller
-@RequestMapping("/magento/auth")
-public class MagentoAuthController {
+@RequestMapping("/magento/data")
+public class MagentoDataController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public void saveMagentoAuthData(@RequestParam(value = "sw_user_id", required = true) String swUserId,
-			@RequestParam(value = "mag_username", required = true) String magUsername,
-			@RequestParam(value = "mag_pass", required = true) String magPass,
 			@RequestParam(value = "mag_url", required = true) String magURL, HttpServletResponse response)
 					throws ServletException, IOException {
 
 		System.out.println("Save magento data in db");
 		// save in db
 		try {
-			MagentoAuthDAO.saveData(swUserId, magUsername, magPass, magURL);
+			MagentoAuthDAO.saveData(swUserId, magURL);
 		} catch (SQLException ex) {
 			throw new ServletException("Server internal error on saving Magento data");
 		}
@@ -42,7 +42,7 @@ public class MagentoAuthController {
 
 		// save in db
 		try {
-			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserIdWithoutPass(swUserId);
+			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
 			// return the newly created uuid
 			String resp = new Gson().toJson(magentoData);
 			System.out.println("MagentoData response as JSON===" + resp);
