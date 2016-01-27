@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.magento.auth_data.dao;
+package com.silverwiresapp.admin.magento.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,16 +33,13 @@ public class MagentoAuthDAO {
 	public static void insertAuthDataJDBC(String swUserId, String username, String pass, String url)
 			throws SQLException {
 		Connection con = JdbcPersistanceUtil.createConnection();
-		String insertString = "INSERT INTO magento_data (sw_user_id, username, pass, url) values(?,?,?,?)";
+		String insertString = "INSERT INTO magento_data (sw_user_id,url) values(?,?)";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
 		stmt.setString(1, swUserId);
-		stmt.setString(2, username);
-		stmt.setString(3, pass);
-		stmt.setString(4, url);
+		stmt.setString(2, url);
 
 		stmt.executeUpdate();
-
 		JdbcPersistanceUtil.closeConnection(con);
 
 	}
@@ -71,16 +68,13 @@ public class MagentoAuthDAO {
 	public static void updateAuthDataJDBC(String swUserId, String username, String pass, String url)
 			throws SQLException {
 		Connection con = JdbcPersistanceUtil.createConnection();
-		String insertString = "update magento_data SET  username=?, pass=?, url=? where sw_user_id=?";
+		String insertString = "update magento_data SET  url=? where sw_user_id=?";
 		PreparedStatement stmt = con.prepareStatement(insertString);
 
-		stmt.setString(1, username);
-		stmt.setString(2, pass);
-		stmt.setString(3, url);
-		stmt.setString(4, swUserId);
+		stmt.setString(1, url);
+		stmt.setString(2, swUserId);
 
 		stmt.executeUpdate();
-
 		JdbcPersistanceUtil.closeConnection(con);
 
 	}

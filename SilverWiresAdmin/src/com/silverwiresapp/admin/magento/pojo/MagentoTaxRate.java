@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.magento.data;
+package com.silverwiresapp.admin.magento.pojo;
 
 public class MagentoTaxRate {
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
-import com.silverwiresapp.admin.magento.auth_data.dao.MagentoAuthDAO;
+import com.silverwiresapp.admin.magento.dao.MagentoAuthDAO;
 import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 
 @Controller

@@ -46,7 +46,6 @@ public class MagentoScribeController {
 		try {
 			Transaction tx = HibernatePersistanceUtil.getTransaction();
 			tx.begin();
-
 			MagentoTokens mgTokens = MagentoHibernateHelper.getTokensBySwUserId(swUserId);
 			if (mgTokens == null) {
 				mgTokens = new MagentoTokens(swUserId);
