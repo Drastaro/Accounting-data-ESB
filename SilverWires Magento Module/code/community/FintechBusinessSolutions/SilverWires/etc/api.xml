@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <silverwires_api translate="title" module="silverwires">
+                <title>Myapi</title>
+                <acl>silverwires/api</acl>
+                <model>silverwires/api</model>
+                <methods>                    
+						<swlisttaxes translate="title" module="silverwires">
+							<title>SW - Tax listing</title>
+							<acl>silverwires/swlisttaxes</acl>
+						</swlisttaxes>
+                </methods>
+            </silverwires_api>
+        </resources>
+        <acl>
+            <resources>
+                <silverwires translate="title" module="silverwires">
+                    <title>silverwires</title>
+                    <sort_order>2000</sort_order>                    
+					<swlisttaxes translate="title" module="silverwires">
+                        <title>SW - Tax listing</title>
+                    </swlisttaxes>
+                </silverwires>
+            </resources>
+        </acl>
+    </api>
+</config>

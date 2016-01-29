@@ -1,0 +1,20 @@
+#apache index:
+DirectoryIndex index.html index.php
+Options -Indexes
+
+#rewrite:
+RewriteEngine On
+
+#maintenance mode
+#RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+#RewriteRule ^(.*)$ /maintenance.html [R=307,L]
+
+#images handler
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^img/_cache/([a-zA-Z0-9_-]+)_([0-9]+).jpg$ /resize.php?action=$1&id=$2 [NC,L]
+
+#regula generala:
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ index.php [L,QSA]

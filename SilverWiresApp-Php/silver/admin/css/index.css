@@ -1,0 +1,302 @@
+html {overflow-y:scroll;}
+body {
+	background:#f4f5ed;
+	font-family:Helvetica,Arial,sans-serif;
+	font-size:12px;
+	color:#3c3c3c;
+	margin:0;
+	padding:40px 10px 10px;
+	min-width:860px;
+}
+select, input, textarea, button {
+	font-family:Helvetica,Arial,sans-serif;
+	font-size:12px;
+	color:#3c3c3c;
+	border-radius:2px;
+}
+select, input[type=text], input[type=password], textarea {
+	border:1px solid #d6d7ce;
+	margin:0;
+	padding:3px;
+	background: url(../img/ui-bg_highlight-soft_100_f6f6f6_1x100.png) repeat-x scroll 50% 50% #F6F6F6;
+    border: 1px solid #DDDDDD;
+	color:#7da801;
+}
+input.calendar {
+	width:80px;
+}
+
+h1 {
+	color: #719f13;
+	font-size: 28px;
+	font-weight: normal;
+	line-height: 36px;
+	margin: 0 0 10px;
+	text-align: center;
+	vertical-align: top;
+}
+	h1 img { margin-right: 16px; vertical-align: top;}
+h2 {font-size:18px; font-weight: normal; margin:0; padding:0;}
+	
+a { color: #7da801; text-decoration: none; cursor: pointer; }
+	a:hover { text-decoration: underline; }
+
+.hl1 {color:#7da801;}
+.hl2 {color:#ce1b00;}
+.hl3 {color:#FF7400;}
+.grey {color:#aaa;}
+.text-inactive {color: #aaa;}
+.note {color: #aaa; font-size: 10px;}
+.hide {display:none;}
+
+#topBar {
+	position:fixed;
+	z-index:1000;
+	top:0;
+	left:0;
+	width:100%;
+	height:30px;
+	line-height:16px;
+	background:#2f2f2f;
+	color:#9c9c9c;
+	font-size:14px;
+	-webkit-box-shadow: 0 0 8px -1px #fff;
+	   -moz-box-shadow: 0 0 8px -1px #fff;
+	        box-shadow: 0 0 8px -1px #fff;
+}
+	#topBar a {color:#eee;}
+	#topBar a:hover {color: #fff;}
+	#topBar .topMenu {float:right; padding:6px 18px;}
+	#topBar .topBreadcrumb {float:left; padding:6px 18px;}
+	#topBar .topBreadcrumbLogo {color:#7da801; text-shadow:0px 0px 2px #000;}
+		#topBar .topBreadcrumbLogo:hover {text-decoration:none; color: #719f13;}
+
+#noticeBox {
+	display:none;
+	border-top:none;
+	border-bottom-right-radius:10px;
+	border-bottom-left-radius:10px;
+	position:fixed;
+	z-index:1001;
+	top:0;
+	left:50%;
+	margin-left:-231px;
+	width:400px;
+	padding:15px 45px 15px 15px;
+}
+	#noticeBox div, #noticeBox a {opacity:0.8;}
+	#noticeBox.noticeBoxGreen {
+		background: #cae285; /* for non-css3 browsers */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cae285', endColorstr='#9eca56'); /* for IE */
+		background: -webkit-gradient(linear, left top, left bottom, from(#cae285), to(#9eca56)); /* for webkit browsers */
+		background: -moz-linear-gradient(top,  #cae285,  #9eca56); /* for firefox 3.6+ */ 
+		border:1px solid #86aa49;
+	}
+		#noticeBox.noticeBoxGreen #noticeBoxClose {color: #cae285; }
+	#noticeBox.noticeBoxRed {
+		background: #f78297; /* for non-css3 browsers */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f78297', endColorstr='#f56778'); /* for IE */
+		background: -webkit-gradient(linear, left top, left bottom, from(#f78297), to(#f56778)); /* for webkit browsers */
+		background: -moz-linear-gradient(top,  #f78297,  #f56778); /* for firefox 3.6+ */ 
+		border:1px solid #d55060;
+	}
+		#noticeBox.noticeBoxRed #noticeBoxClose {color: #f78297; }
+	#noticeBox.noticeBoxOrange {
+		background: #feda71; /* for non-css3 browsers */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#feda71', endColorstr='#febb49'); /* for IE */
+		background: -webkit-gradient(linear, left top, left bottom, from(#feda71), to(#febb49)); /* for webkit browsers */
+		background: -moz-linear-gradient(top,  #feda71,  #febb49); /* for firefox 3.6+ */ 
+		border:1px solid #d6982f;
+	}
+		#noticeBox.noticeBoxOrange #noticeBoxClose {color: #feda71; }
+	#noticeBox.noticeBoxBlue {
+		background: #abe4f8; /* for non-css3 browsers */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#abe4f8', endColorstr='#6ecef3'); /* for IE */
+		background: -webkit-gradient(linear, left top, left bottom, from(#abe4f8), to(#6ecef3)); /* for webkit browsers */
+		background: -moz-linear-gradient(top,  #abe4f8,  #6ecef3); /* for firefox 3.6+ */ 
+		border:1px solid #63abc7;
+	}
+		#noticeBox.noticeBoxBlue #noticeBoxClose {color: #abe4f8; }
+	#noticeBox.noticeBoxGrey {
+		background: #becbd6; /* for non-css3 browsers */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#becbd6', endColorstr='#87a1b3'); /* for IE */
+		background: -webkit-gradient(linear, left top, left bottom, from(#becbd6), to(#87a1b3)); /* for webkit browsers */
+		background: -moz-linear-gradient(top,  #becbd6,  #87a1b3); /* for firefox 3.6+ */ 
+		border:1px solid #6f818e;
+	}
+		#noticeBox.noticeBoxGrey #noticeBoxClose {color: #becbd6; }
+	#noticeBox #noticeBoxClose {
+		position: absolute;
+		bottom:15px;
+		right:15px;
+		display: block;
+		background:#000;
+		font-weight:bold;
+		font-size:12px;
+		height:12px;
+		line-height:12px;
+		padding:0 4px 2px;
+		border-radius:7px;
+	}
+	#noticeBox #noticeBoxClose:hover {text-decoration:none;background:#222;}
+
+
+.fancytable {background:#DDD; border:0; padding:0; margin:0 auto; border-spacing:1px; border-radius:2px; min-width:500px;}
+	.fancytable th {background: #EEE; font-weight: bold; text-transform: uppercase; text-align: left; margin:0; padding:4px 6px;}
+		.fancytable th a {float:right; font-weight:normal; text-transform:none;}
+	.fancytable td {background:#fff; padding:4px 6px;}
+	.fancytable table {width:100%;}
+	.fancytable ul {margin:0; padding:0 0 0 15px;}
+	.fancytable .big, .fancytable .big input, .fancytable .big select {font-size:20px;}
+.invisibletable {padding:0; border:0; margin:0;}
+.actiontable tr:hover td { background:#f4f4f4; }
+
+.actiontable tr.status1:hover td, .actiontable tr.status2:hover td
+.actiontable tr.status3:hover td, .actiontable tr.status4:hover td { background:#f0f0f0; }
+
+.fancytable tr.status1 td {background:#f9f9f9;}
+	.status1 {color:#888;}
+.fancytable tr.status2 td {background:#ffffff;}
+	.status2 {color:#ce1b00;}
+.fancytable tr.status3 td {background:#f9f9f9;}
+	.status3 {color:#7da801;}
+.fancytable tr.status4 td {background:#f4f4f4;}
+	.status4 {color:#bbb;}
+
+.fancytable td.warning {background:url("/admin/img/warning.png") no-repeat 5px 5px #FFF0AA;}	
+.twocolstable tr td:first-child {text-align:right;}
+.twocolstable tr td:last-child {text-align:left; color:#7da801;}
+	
+.softpanel {background:#eee; border-radius:2px; padding:5px 7px;}
+	
+.dashboard a {display: block; padding:5px;}
+	.dashboard a:hover {text-decoration: none; background: #e8e8e8;}
+	.dashboard a img {margin-bottom: 5px;}
+	.dashboard a sup {color:#fff; background:#d00; padding:0 3px; border-radius:6px; font-size:9px;}
+
+	
+.button {
+	background: #7da801;
+	color:#fff;
+	font-weight:normal;
+	height:22px;
+	line-height:22px;
+	border:0;
+	margin:0;
+	padding:0 10px 2px;
+	cursor:pointer;
+	text-align:center;
+	border-radius:2px;
+}
+	a.button {display:inline-block; padding:1px 12px; height:20px; line-height:20px; vertical-align:top;}
+	.button:hover {background: #719f13; border:0; text-decoration:none;}
+	.button.red {background: #cc0000;}
+	.button.red:hover {background: #bb0000;}
+	.button.grey {background: #999;}
+	.button.grey:hover {background: #909090;}
+
+
+label {cursor: pointer; padding-right: 20px;}
+
+label, input[type="checkbox"] + label::before, input[type="radio"] + label::before
+{vertical-align: middle;}
+
+/* hide the checkboxes and radios */
+input[type="checkbox"], input[type="radio"]
+{position: absolute; opacity: 0;}
+
+/* we use generated content to create a placeholder for the checkbox and the radio */
+input[type="checkbox"] + label::before, input[type="radio"] + label::before
+{
+	content: ""; display: inline-block; width: 13px; height: 13px; line-height: 13px; margin: 0 8px 0 0;
+    background: url(../img/sprite-radio-checkbox.png) no-repeat 0 0; vertical-align: middle;
+}
+
+/* disabled checkbox or radio */
+input[type="checkbox"]:disabled + label, input[type="radio"]:disabled + label
+{opacity: .5; cursor: default; /* or cursor: no-drop */}
+
+/* hover checkbox (unselected state only) */
+input[type="checkbox"]:not(:checked):hover + label::before
+{background-position: 0 -13px;}
+
+/* selected checkbox */
+input[type="checkbox"]:checked + label::before
+{background-position: 0 -26px;}
+
+/* normal state radio */
+input[type="radio"] + label::before
+{background-position: -13px 0;}
+
+/* radio hover (unselected state only) */
+input[type="radio"]:hover + label::before
+{background-position: -13px -13px;}
+
+/* selected radio */
+input[type="radio"]:checked + label::before
+{background-position: -13px -26px;}
+
+/* focused checkbox or radio */
+input[type="checkbox"]:focus + label, input[type="radio"]:focus + label
+{outline: dotted 1px; /* by not adding color to the value we force the use of system's default focus color "invert" */}
+
+/* older versions of internet explorer do not support either generated content, so we display the system checkboxes and radio buttons */
+@media \0screen {input[type="checkbox"], input[type="radio"] {position: static;}}
+
+
+.pageslinks {margin:10px;}
+	.pageslinks a, .pageslinks span {
+		padding:0px 5px;
+		border: 1px solid #aaa;
+		margin: 2px;
+		background-color: #fff;
+		color: #333;
+		font-size: 14px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+	.pageslinks a:hover, .pageslinks span, .pageslinks a.selected {
+		text-decoration: none;
+		background-color: #C6D3DD;
+	}
+	.pageslinks a.inactive, .pageslinks a.inactive:hover {
+		background-color: #fff;
+		color: #ddd;
+		border: 1px solid #ddd;
+	}
+
+.search-labels div {float:left; margin:0 10px 10px 0; padding:5px 10px; background:#efefef; border-radius:3px;}
+	.search-labels a {float:right; margin-left:10px;}
+	.search-labels a:hover {text-decoration:none; color:#c00;}
+
+.leftCPbox {
+	position:fixed; width:150px; height:100%; top:0; left:0; 
+	background:#eee; border-right:1px solid #ddd; zoverflow:hidden;
+}
+	.leftCPbox form {margin:45px 10px 10px;}
+	.leftCPbox h1 {font-size:23px; line-height:32px; margin-bottom:0;}
+		.leftCPbox h1 img {width:28px; margin-right: 6px;}
+	.leftCPbox label {display:block; margin:7px 0 2px 2px; font-weight:bold; padding:0;}
+	.leftCPbox .ui-combobox input {width:94px;}
+	.leftCPbox input[type=text] {width:122px;}
+
+
+
+.gallery {float:left; width:100px; margin:0 10px 10px 0; text-align:center;}
+.product-images {float:left; padding:2px; border:2px solid #fff; margin:6px;}
+.product-images.primary {border-color:#7da801;}
+
+.simple-combo {width:121px; height:20px; overflow:hidden;}
+	.simple-combo .ctrl {float:right; width:20px; font-weight:bold; text-align:center;}
+	.simple-combo div {position:static; width:100px; border-bottom:1px solid #427d05; border-right:1px solid #427d05;}
+	.simple-combo div a { width:92px; padding-left:8px;}
+	.simple-combo a {display:block; height:20px; line-height:20px; background:#7da801; color:#fff;}
+	.simple-combo a:hover {background:#719f13; text-decoration:none;}
+.simple-combo.grey div {border-bottom:1px solid #c1c1c1; border-right:1px solid #c1c1c1;}
+.simple-combo.grey a {background:#ddd; color:#444;}
+.simple-combo.grey a:hover {background:#e8e8e8;}
+
+.ui-combobox {position:relative; display:inline-block; width:100%;}
+.ui-combobox-toggle {position:absolute; top:0; bottom:0; margin-left:-1px; padding:0; /*IE7*/ *height:1.7em;*top:0.1em;}
+.ui-combobox-input {margin: 0; padding: 3px; width:100%;}
+.ui-widget .ui-combobox input {font-weight:normal; font-size:12px;}
