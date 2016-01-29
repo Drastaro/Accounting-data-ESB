@@ -12,16 +12,14 @@ public class MagentoPropertiesUtils {
 
 	public static Properties propConfig = null;
 	public static String PROP_FILE = "magentoapi.properties";
-
-	public static String MAGENTO_API_KEY;
-	public static String MAGENTO_API_SECRET;
+	
 	public static String MAGENTO_REST_URL;
 	public static String ACCES_TOKEN_URL;
 	public static String REQUEST_TOKEN_URL;
 	public static String AUTHORIZE_URL;
 	public static String OAUTH_CALLBACK_URL;
 
-	public static String QB_POPUP_CLOSE_PAGE;
+	public static String MAGENTO_POPUP_CLOSE_PAGE;
 
 	static {
 		try {
@@ -32,15 +30,13 @@ public class MagentoPropertiesUtils {
 			input = Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_FILE);
 			propConfig.load(input);
 
-			MAGENTO_API_KEY = propConfig.getProperty("magento_api_key");
-			MAGENTO_API_SECRET = propConfig.getProperty("magento_api_secret");
 			MAGENTO_REST_URL = propConfig.getProperty("magento_rest_url");
 			ACCES_TOKEN_URL = propConfig.getProperty("acces_token_endpoint");
 			REQUEST_TOKEN_URL = propConfig.getProperty("request_token_endpoint");
 			AUTHORIZE_URL = propConfig.getProperty("authorize_url");
 			OAUTH_CALLBACK_URL = propConfig.getProperty("oauth_callback_url");
 
-			QB_POPUP_CLOSE_PAGE = propConfig.getProperty("qb_popup_close_page");
+			MAGENTO_POPUP_CLOSE_PAGE = propConfig.getProperty("magento_popup_close_page");
 
 		} catch (IOException e) {
 			LOG.error("Properties File can not be loaded!!! " + e.getLocalizedMessage());

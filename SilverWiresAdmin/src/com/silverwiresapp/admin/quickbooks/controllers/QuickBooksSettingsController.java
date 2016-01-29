@@ -5,19 +5,21 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.google.gson.Gson;
 import com.intuit.ipp.data.Account;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.TaxRate;
 import com.silverwiresapp.admin.magento.dao.MagentoAuthDAO;
-import com.silverwiresapp.admin.magento.data.MagentoGateway;
 import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 import com.silverwiresapp.admin.magento.pojo.MagentoTaxRate;
 import com.silverwiresapp.admin.quickbooks.auth_data.dao.QuickBooksDAO;

@@ -24,14 +24,20 @@ public class MagentoTokens {
 	@Column(name = "CONSUMER_SECRET")
 	private String consumerSecret;
 
-	@Column(name = "AUTH_URL")
-	private String authUrl;
+	@Column(name = "MAGENTO_URL")
+	private String magentoUrl;
 
 	@Column(name = "ACCESS_TOKEN")
 	private String accessToken;
 
 	@Column(name = "ACCESS_TOKEN_SECRET")
 	private String accessTokenSecret;
+	
+	@Column(name = "API_KEY")
+	private String apiKey;
+	
+	@Column(name = "API_SECRET")
+	private String apiSecret;
 
 	public MagentoTokens() {
 
@@ -42,12 +48,12 @@ public class MagentoTokens {
 		this.swUserId = swUserId;
 	}
 
-	public MagentoTokens(String swUserId, String conusmerKey, String consumerSecret, String authUrl) {
+	public MagentoTokens(String swUserId, String conusmerKey, String consumerSecret, String magentoUrl) {
 
 		this.swUserId = swUserId;
 		this.conusmerKey = conusmerKey;
 		this.consumerSecret = consumerSecret;
-		this.authUrl = authUrl;
+		this.magentoUrl = magentoUrl;
 	}
 
 	public int getId() {
@@ -82,14 +88,6 @@ public class MagentoTokens {
 		this.consumerSecret = consumerSecret;
 	}
 
-	public String getAuthUrl() {
-		return authUrl;
-	}
-
-	public void setAuthUrl(String authUrl) {
-		this.authUrl = authUrl;
-	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
@@ -106,4 +104,28 @@ public class MagentoTokens {
 		this.accessTokenSecret = accessTokenSecret;
 	}
 
+	public String getMagentoUrl() {
+		return magentoUrl;
+	}
+
+	public void setMagentoUrl(String magentoUrl) {
+		this.magentoUrl = magentoUrl;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public String getApiSecret() {
+		return apiSecret;
+	}
+
+	public void setApiSecret(String apiSecret) {
+		this.apiSecret = apiSecret;
+	}
+	
 }

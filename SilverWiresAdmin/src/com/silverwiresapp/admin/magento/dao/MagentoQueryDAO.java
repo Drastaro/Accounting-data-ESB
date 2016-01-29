@@ -18,25 +18,23 @@ public class MagentoQueryDAO {
 
 	public static String getMagentoData(String swUserId, String action) {
 
-		OAuthService service = new ServiceBuilder().provider(MagentoScribeApi.class)
-				.apiKey(MagentoPropertiesUtils.MAGENTO_API_KEY).apiSecret(MagentoPropertiesUtils.MAGENTO_API_SECRET)
-				.callback(MagentoPropertiesUtils.OAUTH_CALLBACK_URL).build();
+		MagentoTokens mgTokens = MagentoHibernateHelper.getTokensBySwUserId(swUserId);
+		
+		OAuthService service = new ServiceBuilder().provider(new MagentoScribeApi(mgTokens.getMagentoUrl()))
+				.apiKey(mgTokens.getApiKey()).apiSecret(mgTokens.getApiSecret())
+				.build();
 
 		try {
 
 			Transaction tx = HibernatePersistanceUtil.getTransaction();
 			tx.begin();
 
-			MagentoTokens mgTokens = MagentoHibernateHelper.getTokensBySwUserId(swUserId);
 			Token accesToken = new Token(mgTokens.getAccessToken(), mgTokens.getAccessTokenSecret());
-
 			OAuthRequest request = new OAuthRequest(Verb.GET, MagentoPropertiesUtils.MAGENTO_REST_URL + "/" + action,
 					service);
 			service.signRequest(accesToken, request);
 			Response response = request.send();
-			System.out.println("Got it! Lets see what we found...");
-			System.out.println();
-			System.out.println(response.getBody());
+			return response.getBody();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 
@@ -50,18 +48,17 @@ public class MagentoQueryDAO {
 
 	public static String getMagentoDataById(String swUserId, String action, String id) {
 
-		OAuthService service = new ServiceBuilder().provider(MagentoScribeApi.class)
-				.apiKey(MagentoPropertiesUtils.MAGENTO_API_KEY).apiSecret(MagentoPropertiesUtils.MAGENTO_API_SECRET)
-				.callback(MagentoPropertiesUtils.OAUTH_CALLBACK_URL).build();
+		MagentoTokens mgTokens = MagentoHibernateHelper.getTokensBySwUserId(swUserId);
+		OAuthService service = new ServiceBuilder().provider(new MagentoScribeApi(mgTokens.getMagentoUrl()))
+				.apiKey(mgTokens.getApiKey()).apiSecret(mgTokens.getApiSecret())
+				.build();
 
 		try {
 
 			Transaction tx = HibernatePersistanceUtil.getTransaction();
 			tx.begin();
 
-			MagentoTokens mgTokens = MagentoHibernateHelper.getTokensBySwUserId(swUserId);
 			Token accesToken = new Token(mgTokens.getAccessToken(), mgTokens.getAccessTokenSecret());
-
 			OAuthRequest request = new OAuthRequest(Verb.GET,
 					MagentoPropertiesUtils.MAGENTO_REST_URL + "/" + action + "/" + id, service);
 			service.signRequest(accesToken, request);
