@@ -1,12 +1,12 @@
 package com.silverwiresapp.admin.magento.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Controller;
@@ -14,24 +14,21 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verifier;
 import com.github.scribejava.core.oauth.OAuthService;
-import com.intuit.ipp.data.CompanyInfo;
+import com.silverwiresapp.admin.magento.dao.MagentoRestGateway;
 import com.silverwiresapp.admin.magento.data.MagentoHibernateHelper;
 import com.silverwiresapp.admin.magento.pojo.MagentoTaxRate;
 import com.silverwiresapp.admin.magento.pojo.MagentoTokens;
-import com.silverwiresapp.admin.quickbooks.auth_data.dao.QuickBooksDAO;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksDataGateway;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksPropertiesUtils;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
 import com.silverwiresapp.admin.scribe.MagentoScribeApi;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 import com.silverwiresapp.admin.utils.propertiesutils.MagentoPropertiesUtils;
 
 @Controller
-@RequestMapping("/magento/scribe")
+@RequestMapping("/magento/auth")
 public class MagentoScribeController {
 
 	public static final Logger LOG = Logger.getLogger(MagentoScribeController.class);
@@ -46,9 +43,6 @@ public class MagentoScribeController {
 		OAuthService service = new ServiceBuilder().provider(new MagentoScribeApi(magURL))
 				.apiKey(magKey).apiSecret(magSecret)
 				.callback(MagentoPropertiesUtils.OAUTH_CALLBACK_URL).build();
-
-		System.out.println("=== Mage v1.7.0.2 OAuth Workflow ===");
-		System.out.println();
 
 		// Obtain the Request Token
 		HttpSession session = request.getSession();
@@ -65,11 +59,14 @@ public class MagentoScribeController {
 
 			mgTokens.setConusmerKey(requestToken.getToken());
 			mgTokens.setConsumerSecret(requestToken.getSecret());
+			//format URL to include http:// and www.
+			if(!magURL.startsWith("http://")) {
+				magURL="http://"+magURL;
+			}
 			mgTokens.setMagentoUrl(magURL);
 			mgTokens.setApiKey(magKey);
 			mgTokens.setApiSecret(magSecret);
-			System.out.println("token:" + requestToken.getToken() + "\nsecret:" + requestToken.getSecret());
-
+			
 			if (mgTokens.getId() == 0) {
 				// create
 				HibernatePersistanceUtil.getSession().save(mgTokens);
@@ -141,7 +138,7 @@ public class MagentoScribeController {
 	}
 	
 	@RequestMapping(value = "/status", method = RequestMethod.POST)
-	public void getQuickBooksStatus(@RequestParam(value = "sw_user_id", required = true) String swUserId,
+	public void getMagentoStatus(@RequestParam(value = "sw_user_id", required = true) String swUserId,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		try {
@@ -150,6 +147,7 @@ public class MagentoScribeController {
 			
 			String status = "";
 			String storeURL = "";
+			String magentoKey= "";
 			if (mgTokens == null || StringUtils.isEmpty(mgTokens.getAccessTokenSecret())
 					|| StringUtils.isEmpty(mgTokens.getAccessToken())) {
 				status = "not-connected";
@@ -160,10 +158,11 @@ public class MagentoScribeController {
 				if(taxRates==null)
 					throw new Exception("Unable to connect and get taxes from Magento");
 				storeURL=mgTokens.getMagentoUrl();
+				magentoKey = mgTokens.getApiKey();
 
 			}
 
-			response.getWriter().write("{\"status\":\"" + status + "\", \"storeUrl\":\"" + storeURL + "\"}");
+			response.getWriter().write("{\"status\":\"" + status + "\", \"magentoURL\":\"" + storeURL + "\", \"magentoKey\":\"" + magentoKey +"\"}");
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -171,5 +170,5 @@ public class MagentoScribeController {
 		}
 
 	}
-
+	
 }

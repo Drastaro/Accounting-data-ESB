@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.gson.Gson;
 import com.intuit.ipp.data.Account;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.TaxRate;
-import com.silverwiresapp.admin.magento.dao.MagentoAuthDAO;
-import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 import com.silverwiresapp.admin.magento.pojo.MagentoTaxRate;
 import com.silverwiresapp.admin.quickbooks.auth_data.dao.QuickBooksDAO;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksDataGateway;
@@ -50,7 +47,7 @@ public class QuickBooksSettingsController {
 			List<TaxRate> taxes = QuickBooksDataGateway.getTaxes(tokens);
 
 			// get from magento list of registered tax rates
-			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
+		/*	MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
 			// MagentoTaxRate[] magentoTaxes =
 			// MagentoGateway.getMagentoTaxRates(magentoData);
 			MagentoTaxRate[] magentoTaxes = new MagentoTaxRate[0];
@@ -76,7 +73,7 @@ public class QuickBooksSettingsController {
 
 			String resp = new Gson().toJson(qbSettings);
 			System.out.println("QBSettings response as JSON===" + resp);
-			response.getWriter().write(resp);
+			response.getWriter().write(resp);*/
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

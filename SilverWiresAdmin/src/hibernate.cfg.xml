@@ -18,6 +18,5 @@
 		<mapping class="com.silverwiresapp.admin.users.pojo.UserData" />
 		<mapping class="com.silverwiresapp.admin.xeroauth.pojo.XeroTokens" />
 		<mapping class="com.silverwiresapp.admin.magento.pojo.MagentoTokens" />
-		<mapping class="com.silverwiresapp.admin.magento.pojo.MagentoAuthData" />
 	</session-factory>
 </hibernate-configuration>
