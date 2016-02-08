@@ -14,7 +14,7 @@ public class QuickBooksTokens {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "ID")
 	private long id;
 
 	@Column(name = "SW_USER_ID", unique = true)

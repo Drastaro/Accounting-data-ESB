@@ -5,23 +5,20 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.google.gson.Gson;
 import com.intuit.ipp.data.Account;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.TaxRate;
 import com.silverwiresapp.admin.magento.dao.MagentoPersistanceDAO;
-import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 import com.silverwiresapp.admin.magento.pojo.MagentoTaxRate;
+import com.silverwiresapp.admin.magento.pojo.MagentoTokens;
 import com.silverwiresapp.admin.quickbooks.dao.QuickBooksPersistanceDAO;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksDataGateway;
 import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksSettings;
@@ -50,7 +47,7 @@ public class QuickBooksSettingsController {
 			List<TaxRate> taxes = QuickBooksDataGateway.getTaxes(tokens);
 
 			// get from magento list of registered tax rates
-			MagentoAuthData magentoData = MagentoPersistanceDAO.getMagentoAuthDataBySwUserId(swUserId);
+			MagentoTokens magentoData = MagentoPersistanceDAO.getMagentoDataBySwUserId(swUserId);
 			// MagentoTaxRate[] magentoTaxes =
 			// MagentoGateway.getMagentoTaxRates(magentoData);
 			MagentoTaxRate[] magentoTaxes = new MagentoTaxRate[0];
