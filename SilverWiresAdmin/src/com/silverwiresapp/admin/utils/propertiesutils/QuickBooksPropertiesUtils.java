@@ -1,26 +1,11 @@
-/*
- * Copyright (c) 2011 Intuit, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.opensource.org/licenses/eclipse-1.0.php
- * Contributors:
- *
- *    Intuit Partner Platform - initial contribution 
- *
- */
 
-package com.silverwiresapp.admin.quickbooks.data;
+package com.silverwiresapp.admin.utils.propertiesutils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-
-/*
- * A utility class for this sample web app.
- */
 
 public class QuickBooksPropertiesUtils {
 
@@ -33,18 +18,12 @@ public class QuickBooksPropertiesUtils {
 	public static String ACCESS_TOKEN_URL;
 	public static String AUTHORIZE_URL;
 	public static String DISCONNECT_URL;
-
+	public static String API_KEY;
 	public static String OAUTH_CONSUMER_KEY;
 	public static String OAUTH_CONSUMER_SECRET;
-
 	public static String OAUTH_CALLBACK_URL;
-
+	public static String SCRIBE_OAUTH_CALLBACK_URL;
 	public static String QBO_URL;
-
-	/*
-	 * the QB auth pop-up redirects to this page - used for refershing the
-	 * parent page
-	 */
 	public static String QB_POPUP_CLOSE_PAGE;
 
 	static {
@@ -57,11 +36,12 @@ public class QuickBooksPropertiesUtils {
 
 			// load properties file
 			propConfig.load(input);
-
+			API_KEY = propConfig.getProperty("quickbooks_api_key");
 			OAUTH_CONSUMER_KEY = propConfig.getProperty("oauth_consumer_key");
 			OAUTH_CONSUMER_SECRET = propConfig.getProperty("oauth_consumer_secret");
 
 			OAUTH_CALLBACK_URL = propConfig.getProperty("oauth_callback_url");
+			SCRIBE_OAUTH_CALLBACK_URL = propConfig.getProperty("scribe_oauth_callback_url");
 
 			QBO_URL = propConfig.getProperty("qbo_url");
 

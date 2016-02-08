@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.quickbooks.data;
+package com.silverwiresapp.admin.quickbooks.pojo;
 
 import java.util.Map;
 

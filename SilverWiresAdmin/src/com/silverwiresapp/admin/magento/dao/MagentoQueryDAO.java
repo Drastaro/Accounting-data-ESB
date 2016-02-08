@@ -8,10 +8,10 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuthService;
-import com.silverwiresapp.admin.magento.data.MagentoHibernateHelper;
 import com.silverwiresapp.admin.magento.pojo.MagentoTokens;
 import com.silverwiresapp.admin.scribe.MagentoScribeApi;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.MagentoHibernateHelper;
 import com.silverwiresapp.admin.utils.propertiesutils.MagentoPropertiesUtils;
 
 public class MagentoQueryDAO {

@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.quickbooks.data;
+package com.silverwiresapp.admin.quickbooks.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,29 +17,42 @@ public class QuickBooksTokens {
 	@Column(name = "id")
 	private long id;
 
-	@Column(name = "sw_user_id", unique = true)
+	@Column(name = "SW_USER_ID", unique = true)
 	private String swUserId;
 
 	@Transient
 	private boolean connectedToQbo;
 
-	@Column(name = "realmId")
+	@Column(name = "COMPANY_ID")
 	private String qboCompanyId;
 
-	@Column(name = "requestToken")
+	@Column(name = "CONSUMER_KEY")
 	private String requestToken;
 
-	@Column(name = "requestTokenSecret")
+	@Column(name = "CONSUMER_SECRET")
 	private String requestTokenSecret;
 
-	@Column(name = "accessToken")
+	@Column(name = "ACCESS_TOKEN")
 	private String accessToken;
 
-	@Column(name = "accessTokenSecret")
+	@Column(name = "ACCESS_TOKEN_SECRET")
 	private String accessTokenSecret;
+
+	@Column(name = "AUTH_URL")
+	private String authUrl;
 
 	public QuickBooksTokens() {
 
+	}
+
+	public QuickBooksTokens(String swUserId, String requestToken, String requestTokenSecret, String accessToken,
+			String accessTokenSecret, String authUrl) {
+		this.swUserId = swUserId;
+		this.requestToken = requestToken;
+		this.requestTokenSecret = requestTokenSecret;
+		this.accessToken = accessToken;
+		this.accessTokenSecret = accessTokenSecret;
+		this.authUrl = authUrl;
 	}
 
 	public QuickBooksTokens(String qboCompanyId, String accessToken, String accessTokenSecret) {
@@ -112,6 +125,14 @@ public class QuickBooksTokens {
 
 	public void setConnectedToQbo(boolean connectedToQbo) {
 		this.connectedToQbo = connectedToQbo;
+	}
+
+	public String getAuthUrl() {
+		return authUrl;
+	}
+
+	public void setAuthUrl(String authUrl) {
+		this.authUrl = authUrl;
 	}
 
 }

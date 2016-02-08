@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +14,10 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verifier;
 import com.github.scribejava.core.oauth.OAuthService;
-import com.silverwiresapp.admin.magento.data.MagentoHibernateHelper;
-import com.silverwiresapp.admin.magento.pojo.MagentoTokens;
 import com.silverwiresapp.admin.scribe.XeroScribeApi;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.XeroHibernateHelper;
 import com.silverwiresapp.admin.utils.propertiesutils.XeroPropertiesUtils;
-import com.silverwiresapp.admin.xeroauth.data.XeroHibernateHelper;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
 @Controller
@@ -130,7 +127,7 @@ public class XeroScribeController {
 		} finally {
 			HibernatePersistanceUtil.closeSession();
 			request.getSession().removeAttribute("xeroTokens");
-			request.getSession().removeAttribute("token");
+			request.getSession().removeAttribute("requestToken");
 		}
 
 	}

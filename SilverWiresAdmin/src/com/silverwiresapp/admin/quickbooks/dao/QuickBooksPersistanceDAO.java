@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.quickbooks.auth_data.dao;
+package com.silverwiresapp.admin.quickbooks.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,12 +11,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksSettings;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksTokens;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.JdbcPersistanceUtil;
 
-public class QuickBooksDAO {
+public class QuickBooksPersistanceDAO {
 
 	public static void saveRequestTokens(String swUserId, String requestToken, String requestSecret)
 			throws SQLException {
@@ -382,8 +382,6 @@ public class QuickBooksDAO {
 
 			tx = session.beginTransaction();
 
-			// Criteria cr = session.createCriteria(QuickBooksSettings.class);
-			// session.delete(cr.add(Restrictions.eq("swUserId", swUserId)));
 			Criteria cr = session.createCriteria(QuickBooksSettings.class);
 			QuickBooksSettings quickSettings = (QuickBooksSettings) cr.add(Restrictions.eq("swUserId", swUserId))
 					.uniqueResult();

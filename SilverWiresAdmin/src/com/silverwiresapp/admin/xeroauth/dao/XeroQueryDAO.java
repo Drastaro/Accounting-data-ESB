@@ -10,8 +10,8 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuthService;
 import com.silverwiresapp.admin.scribe.XeroScribeApi;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.XeroHibernateHelper;
 import com.silverwiresapp.admin.utils.propertiesutils.XeroPropertiesUtils;
-import com.silverwiresapp.admin.xeroauth.data.XeroHibernateHelper;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
 public class XeroQueryDAO {

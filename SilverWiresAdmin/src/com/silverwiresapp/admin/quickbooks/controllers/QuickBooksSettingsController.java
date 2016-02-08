@@ -19,13 +19,13 @@ import com.google.gson.Gson;
 import com.intuit.ipp.data.Account;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.TaxRate;
-import com.silverwiresapp.admin.magento.dao.MagentoAuthDAO;
+import com.silverwiresapp.admin.magento.dao.MagentoPersistanceDAO;
 import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 import com.silverwiresapp.admin.magento.pojo.MagentoTaxRate;
-import com.silverwiresapp.admin.quickbooks.auth_data.dao.QuickBooksDAO;
+import com.silverwiresapp.admin.quickbooks.dao.QuickBooksPersistanceDAO;
 import com.silverwiresapp.admin.quickbooks.data.QuickBooksDataGateway;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksSettings;
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksSettings;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksTokens;
 
 @Controller
 @RequestMapping("/quickbooks/settings")
@@ -37,7 +37,7 @@ public class QuickBooksSettingsController {
 
 		try {
 			// get from DB if the tokens are saved
-			QuickBooksTokens tokens = QuickBooksDAO.getTokensBySwUserId(swUserId);
+			QuickBooksTokens tokens = QuickBooksPersistanceDAO.getTokensBySwUserId(swUserId);
 
 			// get from Quickbooks company name
 
@@ -50,7 +50,7 @@ public class QuickBooksSettingsController {
 			List<TaxRate> taxes = QuickBooksDataGateway.getTaxes(tokens);
 
 			// get from magento list of registered tax rates
-			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
+			MagentoAuthData magentoData = MagentoPersistanceDAO.getMagentoAuthDataBySwUserId(swUserId);
 			// MagentoTaxRate[] magentoTaxes =
 			// MagentoGateway.getMagentoTaxRates(magentoData);
 			MagentoTaxRate[] magentoTaxes = new MagentoTaxRate[0];
@@ -59,7 +59,7 @@ public class QuickBooksSettingsController {
 			Map<String, String> taxesMap = getTaxesMap(taxes);
 			Map<String, String> magentTaxesMap = getMagentoTaxesMap(magentoTaxes);
 			taxesMap.put("-1", "No tax mapping");
-			QuickBooksSettings qbSettings = QuickBooksDAO.getSettingsByUserId(swUserId);
+			QuickBooksSettings qbSettings = QuickBooksPersistanceDAO.getSettingsByUserId(swUserId);
 
 			if (qbSettings == null) {
 				qbSettings = new QuickBooksSettings();
@@ -112,7 +112,7 @@ public class QuickBooksSettingsController {
 			QuickBooksSettings settings = new QuickBooksSettings();
 			settings.setSelectedIncomeAccountId(incomeAccount);
 			settings.setMagQBTaxesMapping(magQBTaxesIds);
-			QuickBooksDAO.insertSettings(swUserId, settings);
+			QuickBooksPersistanceDAO.insertSettings(swUserId, settings);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new ServletException("Server internal error on saving Quickbooks data");

@@ -10,6 +10,8 @@ import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.services.DataService;
 import com.intuit.ipp.services.QueryResult;
 import com.intuit.ipp.util.Config;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksTokens;
+import com.silverwiresapp.admin.utils.propertiesutils.QuickBooksPropertiesUtils;
 
 public class QuickBooksDataGateway {
 

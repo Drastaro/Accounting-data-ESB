@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.xeroauth.data;
+package com.silverwiresapp.admin.utils.dbpersistanceutils;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
 public class XeroHibernateHelper {

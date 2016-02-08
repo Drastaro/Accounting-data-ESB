@@ -20,8 +20,8 @@ import com.google.api.client.auth.oauth.OAuthGetAccessToken;
 import com.google.api.client.auth.oauth.OAuthHmacSigner;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.XeroHibernateHelper;
 import com.silverwiresapp.admin.utils.propertiesutils.XeroPropertiesUtils;
-import com.silverwiresapp.admin.xeroauth.data.XeroHibernateHelper;
 import com.silverwiresapp.admin.xeroauth.pojo.XeroTokens;
 
 @Controller

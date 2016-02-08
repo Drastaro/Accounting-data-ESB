@@ -16,7 +16,7 @@ import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
 import com.silverwiresapp.admin.utils.dbpersistanceutils.JdbcPersistanceUtil;
 
-public class MagentoAuthDAO {
+public class MagentoPersistanceDAO {
 
 	public static void saveData(String swUserId, String url) throws SQLException {
 

@@ -1,4 +1,4 @@
-package com.silverwiresapp.admin.quickbooks.utils;
+package com.silverwiresapp.admin.utils.dbpersistanceutils;
 
 import java.util.List;
 
@@ -7,10 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.silverwiresapp.admin.quickbooks.data.QuickBooksTokens;
-import com.silverwiresapp.admin.utils.dbpersistanceutils.HibernatePersistanceUtil;
+import com.silverwiresapp.admin.quickbooks.pojo.QuickBooksTokens;
 
-public class QuickBooksHibernateUtil {
+public class QuickBooksHibernateHelper {
 
 	public static QuickBooksTokens getTokensBySwUserId(String swUserId) {
 		// get hibernate session

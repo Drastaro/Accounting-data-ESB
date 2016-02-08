@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpResponse;
+import com.silverwiresapp.admin.utils.dbpersistanceutils.XeroHibernateHelper;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfContact;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfInvoice;
 import com.silverwiresapp.admin.xeroauth.api.xsd.ArrayOfOrganisation;

@@ -32,10 +32,10 @@ public class MagentoTokens {
 
 	@Column(name = "ACCESS_TOKEN_SECRET")
 	private String accessTokenSecret;
-	
+
 	@Column(name = "API_KEY")
 	private String apiKey;
-	
+
 	@Column(name = "API_SECRET")
 	private String apiSecret;
 
@@ -127,5 +127,5 @@ public class MagentoTokens {
 	public void setApiSecret(String apiSecret) {
 		this.apiSecret = apiSecret;
 	}
-	
+
 }

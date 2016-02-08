@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
-import com.silverwiresapp.admin.magento.dao.MagentoAuthDAO;
+import com.silverwiresapp.admin.magento.dao.MagentoPersistanceDAO;
 import com.silverwiresapp.admin.magento.pojo.MagentoAuthData;
 
 @Controller
@@ -27,7 +27,7 @@ public class MagentoDataController {
 		System.out.println("Save magento data in db");
 		// save in db
 		try {
-			MagentoAuthDAO.saveData(swUserId, magURL);
+			MagentoPersistanceDAO.saveData(swUserId, magURL);
 		} catch (SQLException ex) {
 			throw new ServletException("Server internal error on saving Magento data");
 		}
@@ -42,7 +42,7 @@ public class MagentoDataController {
 
 		// save in db
 		try {
-			MagentoAuthData magentoData = MagentoAuthDAO.getMagentoAuthDataBySwUserId(swUserId);
+			MagentoAuthData magentoData = MagentoPersistanceDAO.getMagentoAuthDataBySwUserId(swUserId);
 			// return the newly created uuid
 			String resp = new Gson().toJson(magentoData);
 			System.out.println("MagentoData response as JSON===" + resp);
