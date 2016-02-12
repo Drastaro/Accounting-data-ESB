@@ -25,7 +25,7 @@ import com.silverwiresapp.admin.utils.dbpersistanceutils.MagentoHibernateHelper;
 import com.silverwiresapp.admin.utils.propertiesutils.MagentoPropertiesUtils;
 
 @Controller
-@RequestMapping("/magento/scribe")
+@RequestMapping("/magento/auth")
 public class MagentoScribeController {
 
 	public static final Logger LOG = Logger.getLogger(MagentoScribeController.class);
